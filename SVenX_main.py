@@ -8,10 +8,11 @@ import sys
 import os 
 import csv
 import argparse
+import subprocess
 
 ################# ARGPARSER ######################
 
-usage = '''TenexPipe takes fastq-samples generated from 10x-genomics and execute Assambly, Variant calling, plots, stats etc. of the users choice''' 
+usage = '''SVenX takes fastq-samples generated from 10x-genomics and execute Assambly, Variant calling, plots, stats etc. of the users choice''' 
 
 parser = argparse.ArgumentParser(description=usage)
 
@@ -90,21 +91,21 @@ parser.add_argument(
 	)
 
 parser.add_argument(
-	'--TenexNF',
-	metavar = 'TenexPipe.nf',
-	dest='TenexNF',
-	default= './TenexPipe_tmp.nf',
-	help='Path to Tenex nextflow script',
+	'--LongrangerNF',
+	metavar = 'longrnager_wgs.nf',
+	dest='LongWGS',
+	default= './longranger_wgs.nf',
+	help='Path to longranger wgs nextflow script',
 	#type=argparse.FileType('w'),
 	required= False
 	)
 
 parser.add_argument(
-	'--longranger_init',
-	metavar = 'longranger_init',
+	'--launch_longranger',
+	metavar = 'launch_longranger',
 	dest='longranger_init',
-	default= './longranger_init.sh',
-	help='Path to Longranger initiate script; longranger_init.sh',
+	default= './launch_longranger.sh',
+	help='Path to Longranger initiate script; launch_longranger.sh',
 	#type=argparse.FileType('w'),
 	required= False
 	)
@@ -135,7 +136,6 @@ def check_folders (folder_file):
 			continue
 		
 		if len(files) == 3:
-			print files, 'files'
 			I1 = False
 			R1 = False
 			R2 = False 
@@ -201,7 +201,11 @@ def check_sample (sample_file):
 	return(sample_file)
 
 
+#################################### LONGRANGER - VEP #############################################################
 
+def longranger_vep (sh_init_script, nextflow_path, nextflow_script, sample, config, output, sample_type): # sample_type = folder or sample
+	# Create script longranger - vep 
+	subprocess.call(['cat', args.longranger >> test1.txt')
 
 #################################### INITIATE LONGRANGER WGS AND BASIC -FUNCTIONS ##################################
 
@@ -235,7 +239,7 @@ print('Author: Vanja Borjesson')
 print('Usage: https://github.com/vborjesson/MasterProject.git \n')
 print('---------------------------------------------------------------------------------------------------------\n') 
 
-#################################### MAIN SCRIPT ###############################################
+#################################### MAIN SCRIPT -  ###############################################
 
 
 # If a folder of folders with 10x data - this will initiate a function that checks that all folders and files are added correctly. 
@@ -247,7 +251,7 @@ if tenX_folder:
 		#print('tenX_path from function checked', tenX_path)
 
 		# Longranger wgs is initiated through bash and nextflow with checked folders as input. 
-		process_longranger = longranger(args.longranger_init, args.nf, args.TenexNF, tenX_folder, args.config, args.output, '--folder') 
+		process_longranger = longranger(args.longranger_init, args.nf, args.LongWGS, tenX_folder, args.config, args.output, '--folder') 
 
 
 # if only one sample; this one is checked separately i fall files exist. Send to longranger if recuired. 
@@ -256,8 +260,10 @@ if tenX_sample:
 	if tenX_path:
 		print('\nThe sample is checked and complete')		
 		if wgs or basic:
-			process_longranger = longranger(args.longranger_init, args.nf, args.TenexNF, tenX_path, args.config, args.output, '--sample') 
+			process_longranger = longranger(args.longranger_init, args.nf, args.LongWGS, tenX_path, args.config, args.output, '--sample') 
 
+
+##################################### IF #########################################################################################
 
 
 
