@@ -53,3 +53,4 @@ if (params.wgs) {
 		}
 	}
 }
+

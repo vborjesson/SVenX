@@ -8,7 +8,7 @@
 
 module load bioinfo-tools
 module load longranger
-module load vep
+module load vep/87
 
 #module load python3
 
@@ -16,6 +16,6 @@ module load vep
 #longranger wgs --fastqs=/proj/b2016296/INBOX/P5357/Sample_P5357_1001 --id=sample2 --reference=~/MasterProject/fastq_data/refdata-hg19-2.1.0/
 
 #TenexPipe main
-python ./SVenX_main.py --folder /home/vanja/MasterProject/fastq_data/Tenex_folder --wgs
+python ./SVenX_main.py --folder /home/vanja/MasterProject/fastq_data/Tenex_folder --wgs --vep --dryrun
 
 

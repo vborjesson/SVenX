@@ -1,3 +1,5 @@
+
+
 if (params.wgs) { 
 	process VEP_annotation 	{
 		publishDir params.workingDir, mode: "copy", overwrite: true
@@ -16,3 +18,4 @@ if (params.wgs) {
 		"""
 	}
 }
+

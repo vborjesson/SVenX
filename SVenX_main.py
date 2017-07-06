@@ -6,7 +6,6 @@ Main script for TenexPipe
 
 import sys
 import os 
-import csv
 import argparse
 import subprocess
 
@@ -33,9 +32,19 @@ parser.add_argument(
 	)
 
 parser.add_argument(
+	'--config',
+	metavar = 'config-file',
+	dest='config',
+	default= './SVenX_nf.config',
+	help='Path to configuration file',
+	#type=argparse.FileType('w'),
+	required= False
+	)
+
+parser.add_argument(
 	'--dryrun',
 	dest = 'dryrun',
-	help = 'If no samples added, please use this dryrun',
+	help = 'Add if you want to perform a dry run (good if testing pipeline)',
 	action = 'store_true'
 	)
 
@@ -50,6 +59,25 @@ parser.add_argument(
 	)
 
 parser.add_argument(
+	'--vep',
+	dest='vep',
+	help= 'Add if you want to run vep',
+	action = 'store_true'
+	) 
+
+parser.add_argument(
+	'--variant_calling', 
+	dest= 'variant_calling',
+	help= 'Add if you want to run variant calling',
+	action= 'store_true'
+	)
+
+parser.add_argument(
+	'--annotation', 
+	dest = 'annotation',
+	help= 'Add if you want to run annotations')
+
+parser.add_argument(
 	'--basic',
 	#metavar = 'Longranger_wgs',
 	dest='l_basic',
@@ -59,22 +87,12 @@ parser.add_argument(
 	#required= False
 	)
 
-parser.add_argument(
-	'--config',
-	metavar = 'config-file',
-	dest='config',
-	default= './TenexPipe.config',
-	help='Add configuration file',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
 
 parser.add_argument(
 	'--output',
 	metavar = 'Output',
 	dest='output',
-	default='./Longranger_out',
+	default='./SVenX_outs',
 	help='workingDir',
 	#type=argparse.FileType('w'),
 	required= False
@@ -91,36 +109,52 @@ parser.add_argument(
 	)
 
 parser.add_argument(
-	'--LongrangerNF',
-	metavar = 'longrnager_wgs.nf',
-	dest='LongWGS',
-	default= './longranger_wgs.nf',
+	'--l_wgs_nf',
+	metavar = 'longranger_wgs.nf',
+	dest='wgs_nf',
+	default= 'longranger_wgs.nf',
 	help='Path to longranger wgs nextflow script',
 	#type=argparse.FileType('w'),
 	required= False
 	)
 
 parser.add_argument(
-	'--launch_longranger',
-	metavar = 'launch_longranger',
-	dest='longranger_init',
-	default= './launch_longranger.sh',
-	help='Path to Longranger initiate script; launch_longranger.sh',
+	'--vep_nf',
+	metavar = 'vep.nf',
+	dest='vep_nf',
+	default= 'VEP.nf',
+	help='Path to VEP nextflow script',
+	#type=argparse.FileType('w'),
+	required= False
+	)
+
+parser.add_argument(
+	'--init_wgs_vep',
+	metavar = 'initiate_wgs_vep',
+	dest='init_wgs_vep',
+	default= './init_wgs_vep.sh',
+	help='Path to wgs_vep initiate script; init_wgs_vep.sh',
 	#type=argparse.FileType('w'),
 	required= False
 	)
 
 
 args = parser.parse_args()
+
 tenX_folder = args.tenX_folder
 tenX_sample = args.tenX_sample
+
+# Programs 
 dry_run = args.dryrun
 wgs = args.l_wgs
+vep = args.vep 
+variant_calling = args.variant_calling
+annotation = args.annotation
 basic = args.l_basic
+
+# defining lists, strings etc. 
 folder_list = []
-folder_path = ''
-TenX_path = ''
-ID_path = {}
+tenX_type = ''
 
 ############################ CHECK SAMPLE CONTENTS -FUNCTIONS ################################## 
 
@@ -128,7 +162,7 @@ ID_path = {}
 # If not completed or if only one sample is added, the program will break and return an error message. If all folders and files are in order, their path will be saved in a list. 
 
 def check_folders (folder_file):
-	print('Checking if all samples in folder containes all three fastq-files; I1, R1 and R2.\n')
+	print('Checking if all samples in folder contains all three fastq-files; I1, R1 and R2.\n')
 
 	for root, dirs, files in os.walk(folder_file, topdown=False, followlinks=True):
 		#print(root, dirs, files)
@@ -142,15 +176,15 @@ def check_folders (folder_file):
 			
 			#print('Three files was found in this root', root)
 			for file in files:
-				if ('I1_001.fastq.gz' in file):
+				if ('I1' in file):
 					I1 = True
-				if ('R1_001.fastq.gz' in file):
+				if ('R1' in file):
 					R1 = True
-				if ('R2_001.fastq.gz' in file):
+				if ('R2' in file):
 					R2 = True
 
 			if not (I1 and R1 and R2):
-				print '\nError: This sample', root, 'is not complete, please check it and try again.' 	
+				print root, '\nError: This sample is not complete, please check it and try again.' 	
 				sys.exit()
 
 			if (I1 and R1 and R2):
@@ -158,7 +192,7 @@ def check_folders (folder_file):
 				print root.split('/')[-1], 'is checked and complete.'
 
 		else:
-			print '\nError, wrong number of files in folder ', root, '. Three fastq-files are recuired, please check the folder and try again.'
+			print root, '\nError, wrong number of files in folder. Three fastq-files are required, please check the folder and try again.'
 			sys.exit()
 
 	if (len(folder_list)) == 0:
@@ -166,11 +200,12 @@ def check_folders (folder_file):
 		sys.exit()	
 	
 	else:
-		return(folder_list)	
+		print folder_file
+		return(folder_file)	
 
 
 # Read in the 10x-genomics fastq-sample-folder and check weather this is complete or not. 
-# If not completed, the program will break and return an error message. If all files are correct, the path will be saved in folder_list. 
+# If not complete, the program will break and return an error message. If all files in sample are correct, the path will be returned. 
 
 def check_sample (sample_file):
 	fastq_list = os.listdir(sample_file)
@@ -182,15 +217,13 @@ def check_sample (sample_file):
 		for file in fastq_list:
 		#print('three files exist in this file')
 
-			if ('I1_001.fastq.gz' in file):
+			if ('I1' in file):
 				I1 = True
-			if ('R1_001.fastq.gz' in file):
+			if ('R1' in file):
 				R1 = True
-			if ('R2_001.fastq.gz' in file):
+			if ('R2' in file):
 				R2 = True
 
-			#print('all three files I1 R1 and R2 was found')
-			#print('Sample', sample_file, 'is checked and complete')
 		if not (I1 and R1 and R2):
 			print('\nError: This sample is not complete, please check it and try again.') 	
 			sys.exit()
@@ -201,11 +234,40 @@ def check_sample (sample_file):
 	return(sample_file)
 
 
-#################################### LONGRANGER - VEP #############################################################
+#################################### FUNCTION LONGRANGER WGS - VEP #############################################################
 
-def longranger_vep (sh_init_script, nextflow_path, nextflow_script, sample, config, output, sample_type): # sample_type = folder or sample
-	# Create script longranger - vep 
-	subprocess.call(['cat', args.longranger >> test1.txt')
+def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type):
+	#subprocess.call('cat ' + str(wgs_script) + ' >> wgs_vep.nf | cat ' + str(vep_script) + ' >> wgs_vep.nf', shell = True)
+	#print "wgs_vep script is finished"
+	print 'Creating wgs-vep script'
+
+	# Create script
+	with open('wgs_vep.nf', 'w') as outfile:
+		subprocess.call('cat ' + str(wgs_script), shell=True, stdout=outfile)
+		subprocess.call('cat '+ str(vep_script), shell=True, stdout=outfile)
+		print 'Script completed'
+
+	# initiate longranger wgs and vep in nextflow	
+	subprocess.call('chmod +x ' + sh_init_script, shell=True)
+
+	if dry_run:
+		print 'Initiating dryrun'
+		process = [sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type, '--dry_run']
+		os.system(" ".join(process))
+
+		#subprocess.call(str(sh_init_script) + " " + str(nextflow_path) + ' wgs_vep.nf ' + str(sample) + " " + str(config) + " " + str(output) + " " + str(sample_type) + ' --dry_run', shell = True)
+
+	else: 
+		subprocess.call([sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type], shell = True)
+
+	print 'Longranger wgs and vep have successfully been executed'	
+'''
+def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type):
+	process1 = ['cat', wgs_script, '>>', 'wgs_vep.nf', '|', 'cat', vep_script, '>>', 'wgs_vep.nf']
+	os.system(" ".join(process1))
+	process2 = [sh_init_script, nextflow_path, './wgs_vep.nf', sample, config, output, sample_type]
+	os.system(" ".join(process2))
+'''
 
 #################################### INITIATE LONGRANGER WGS AND BASIC -FUNCTIONS ##################################
 
@@ -233,8 +295,8 @@ def longranger (sh_init_script, nextflow_path, nextflow_script, sample, config, 
 ################################### TERMINAL MESSAGE #############################################################
 
 print('\n--------------------------------------------------------------------------------------------------------\n')
-print('TenexPipe')
-print('Version: 0.0.1') 
+print('SVenX')
+print('Version: 0.0.0') 
 print('Author: Vanja Borjesson') 
 print('Usage: https://github.com/vborjesson/MasterProject.git \n')
 print('---------------------------------------------------------------------------------------------------------\n') 
@@ -244,26 +306,18 @@ print('-------------------------------------------------------------------------
 
 # If a folder of folders with 10x data - this will initiate a function that checks that all folders and files are added correctly. 
 if tenX_folder:
-	tenX_path = check_folders(tenX_folder) 			
-
-	if tenX_path:
+	folder_complete = check_folders(tenX_folder)
+	tenX_type = '--folder' 			
+	if folder_complete:
 		print('\nAll samples are checked and complete.')
-		#print('tenX_path from function checked', tenX_path)
 
-		# Longranger wgs is initiated through bash and nextflow with checked folders as input. 
-		process_longranger = longranger(args.longranger_init, args.nf, args.LongWGS, tenX_folder, args.config, args.output, '--folder') 
-
-
-# if only one sample; this one is checked separately i fall files exist. Send to longranger if recuired. 
+# I a sample of 10x data - this sample will be checked if it coiontain all fastq-files needed. 
 if tenX_sample:
-	tenX_path = check_sample(tenX_sample)
-	if tenX_path:
-		print('\nThe sample is checked and complete')		
-		if wgs or basic:
-			process_longranger = longranger(args.longranger_init, args.nf, args.LongWGS, tenX_path, args.config, args.output, '--sample') 
+	folder_complete = check_sample(tenX_sample)
+	tenX_type = '--sample' 
+	if folder_complete:
+		print('\nThe sample is checked and complete')			
 
-
-##################################### IF #########################################################################################
-
-
-
+if wgs and vep:
+	initiate_wgs_vep = wgs_vep(args.init_wgs_vep, args.nf, args.wgs_nf, args.vep_nf, folder_complete, args.config, args.output, tenX_type) 
+	print 'wgs and vep executed'
