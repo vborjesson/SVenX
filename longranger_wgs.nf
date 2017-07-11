@@ -43,13 +43,16 @@ if (params.wgs) {
 		"""
 	
 		}else{
+
 		"""
+			echo $path | while read line; do sample_id=`echo $line | awk -F/ '{print $NF}'`; echo $sample_id; done
 			ln -s ${params.wgs_result} ${params.id} 
 			cp ${params.id}/outs/phased_possorted_bam.bam ./bam
 			cp ${params.id}/outs/dels.vcf.gz ./dels_vcf
 			cp ${params.id}/outs/large_svs.vcf.gz ./large_svs_vcf
 			cp ${params.id}/outs/phased_variants.vcf.gz ./phased_variants_vcf
 		"""
+
 		}
 	}
 }

@@ -109,9 +109,9 @@ parser.add_argument(
 	)
 
 parser.add_argument(
-	'--l_wgs_nf',
+	'--wgs_script',
 	metavar = 'longranger_wgs.nf',
-	dest='wgs_nf',
+	dest='wgs_script_nf',
 	default= 'longranger_wgs.nf',
 	help='Path to longranger wgs nextflow script',
 	#type=argparse.FileType('w'),
@@ -119,9 +119,9 @@ parser.add_argument(
 	)
 
 parser.add_argument(
-	'--vep_nf',
+	'--vep_script',
 	metavar = 'vep.nf',
-	dest='vep_nf',
+	dest='vep_script_nf',
 	default= 'VEP.nf',
 	help='Path to VEP nextflow script',
 	#type=argparse.FileType('w'),
@@ -237,8 +237,7 @@ def check_sample (sample_file):
 #################################### FUNCTION LONGRANGER WGS - VEP #############################################################
 
 def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type):
-	#subprocess.call('cat ' + str(wgs_script) + ' >> wgs_vep.nf | cat ' + str(vep_script) + ' >> wgs_vep.nf', shell = True)
-	#print "wgs_vep script is finished"
+
 	print 'Creating wgs-vep script'
 
 	# Create script
@@ -247,9 +246,9 @@ def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, conf
 		subprocess.call('cat '+ str(vep_script), shell=True, stdout=outfile)
 		print 'Script completed'
 
-	# initiate longranger wgs and vep in nextflow	
 	subprocess.call('chmod +x ' + sh_init_script, shell=True)
-
+	
+	# initiate longranger wgs and vep in nextflow
 	if dry_run:
 		print 'Initiating dryrun'
 		process = [sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type, '--dry_run']
@@ -260,7 +259,11 @@ def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, conf
 	else: 
 		subprocess.call([sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type], shell = True)
 
-	print 'Longranger wgs and vep have successfully been executed'	
+		print 'Longranger wgs and vep have successfully been executed'	
+
+
+
+
 '''
 def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type):
 	process1 = ['cat', wgs_script, '>>', 'wgs_vep.nf', '|', 'cat', vep_script, '>>', 'wgs_vep.nf']
@@ -319,5 +322,6 @@ if tenX_sample:
 		print('\nThe sample is checked and complete')			
 
 if wgs and vep:
-	initiate_wgs_vep = wgs_vep(args.init_wgs_vep, args.nf, args.wgs_nf, args.vep_nf, folder_complete, args.config, args.output, tenX_type) 
+	initiate_wgs_vep = wgs_vep(args.init_wgs_vep, args.nf, args.wgs_script_nf, args.vep_script_nf, folder_complete, args.config, args.output, tenX_type) 
 	print 'wgs and vep executed'
+
