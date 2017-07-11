@@ -8,6 +8,17 @@ SVenX is a program that takes in fastq-files (single samples or folder of severa
 In order to run this program you will need to set up an environment. 
 Softwares; longranger + refdata (see https://www.10xgenomics.com), VEP + cache file (VEP ENSMBLE website) and nextflow
 
+Choose one of the following:
+Longranger wgs - Vep
+Longranger wgs - Vep - SV 
+Longranger wgs - Vep - SV - annotation
+Longranger wgs - SV 
+Longrangre wgs - annotation 
+Longranger wgs - SV - annotation 
+ 
+special: SV and annotation combine!
+
+
 Clone this repository. 
 Use SVenX.sh and add the desired parameters;
 ```
@@ -40,10 +51,10 @@ Run
 
 ```
 -- suggestions that we might want to add: 
-- Choose what you want to do; wgs and annotation (VEP, Frequence, 1kg, Swefreq, Exac, Gnomad, Score-model, CADD, Genemode), or wgs and SNVnator, TIDDIT (to find CNVs and rearrangments), SVDB, ..or just wgs and vep.  
+- Choose what you want to do; wgs and annotation (VEP, Frequence, 1kg, Swefreq, Exac, Gnomad, Score-model, CADD, Genemode), or wgs and SNVnator, TIDDIT (to find CNVs and rearrangements), SVDB, ..or just wgs and vep.  
 -Add plots of SVs?
 -Other cool stuff?   
 ```
 ---
-As it looks today, this program runs from masterPipe.sh to core script TenexPipe.py, from there it goes through launch_core.sh to TenexPipe.nf. 
---Do we want the annotation step separetely from longranger?
+
+- 
