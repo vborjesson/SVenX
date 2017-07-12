@@ -33,7 +33,7 @@ if (params.wgs) {
 		set ID, path from tenX_path
 
 		output:
-		set "${ID}_bam", "${ID}_dels_vcf", "${ID}_large_svs_vcf", "${ID}_phased_variants_vcf" into bam_vcf_wgs 
+		set "${ID}", "${ID}_bam", "${ID}_dels_vcf", "${ID}_large_svs_vcf", "${ID}_phased_variants_vcf" into bam_vcf_wgs 
 
 		script:
   

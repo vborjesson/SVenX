@@ -15,5 +15,5 @@
 #module load bioinfo-tools
 #module load longranger
 #module load vep
-
+#module load 
 $1 $2 --fastq $3 --wgs -c $4 --workingDir $5 $6 $7

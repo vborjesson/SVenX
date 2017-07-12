@@ -1,5 +1,8 @@
 #!/bin/bash
+
+#$1 CNVnator directory
 cd $1
+
 #install root and ad it to path
 
 if [ `uname -o` == "GNU/Linux" ] ; 

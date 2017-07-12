@@ -9,6 +9,7 @@
 module load bioinfo-tools
 module load longranger
 module load vep/87
+module load CNVnator
 
 #module load python3
 
