@@ -22,23 +22,44 @@ special: SV and annotation combine!
 Clone this repository. 
 Use SVenX.sh and add the desired parameters;
 ```
-usage: TenexPipe.py [-h] [-s tenX_sample] [-f tenX_folder] [--dryrun] [--wgs]
-                    [--basic] [--config config-file] [--output Output]
+usage: SVenX_main.py [-h] [--sample TENX_SAMPLE] [--folder TENX_FOLDER]
+                     [--config CONFIG] [--dryrun] [--wgs] [--vep] [--TIDDIT]
+                     [--CNVnator] [--annotation] [--basic] [--output OUTPUT]
+                     [--nextflow NF] [--wgs_script WGS_SCRIPT_NF]
+                     [--vep_script VEP_SCRIPT_NF] [--TIDDIT_script TIDDIT.nf]
+                     [--CNVnator_script CNVNATOR_SCRIPT_NF]
+                     [--init_wgs_vep INIT_WGS_VEP]
 
-SVenX takes fastq-samples generated from 10x-genomics and execute
-Assambly, Variant calling, plots, stats etc. of the users choice
+SVenX takes fastq-samples generated from 10x-genomics and execute Assambly,
+Variant calling, plots, stats etc. of the users choice
 
 optional arguments:
   -h, --help            show this help message and exit
-  -s tenX_sample        Path to the 10x-genomics fastq folder
-  -f tenX_folder        If you want to run several 10x-genomic samples at one
+  --sample TENX_SAMPLE  Path to the 10x-genomics fastq folder
+  --folder TENX_FOLDER  If you want to run several 10x-genomic samples at one
                         time, collect all in one folder and enter the path to
                         that folder
-  --dryrun              If no samples added, please use this dryrun
+  --config CONFIG       Path to configuration file
+  --dryrun              Add if you want to perform a dry run (good if testing
+                        pipeline)
   --wgs                 Add if you want to run longranger wgs
+  --vep                 Add if you want to run vep
+  --TIDDIT              Add if you want to run variant calling - TIDDIT
+  --CNVnator            Add if you want to run variant calling - CNVnator
+  --annotation          Add if you want to run annotations
   --basic               Add if you want to run longranger basic
-  --config config-file  Add config-file
-  --output Output       workingDir
+  --output OUTPUT       workingDir
+  --nextflow NF         path to program nextflow
+  --wgs_script WGS_SCRIPT_NF
+                        Path to longranger wgs nextflow script
+  --vep_script VEP_SCRIPT_NF
+                        Path to VEP nextflow script
+  --TIDDIT_script TIDDIT.nf
+                        Path to TIDDIT nextflow script
+  --CNVnator_script CNVNATOR_SCRIPT_NF
+                        Path to CNVnator nextflow script
+  --init_wgs_vep INIT_WGS_VEP
+                        Path to wgs_vep initiate script; init_wgs_vep.sh
 
 ..to be continued 
 
