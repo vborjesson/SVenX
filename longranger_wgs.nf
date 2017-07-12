@@ -14,7 +14,7 @@ if (params.folder) {
 	String folder_path = params.fastq;
 	sample_path =folder_path+character;
 	//System.out.println(otherString);
-	tenX_path = Channel.fromPath(sample_path, type: 'dir').println() 
+	tenX_path = Channel.fromPath(sample_path, type: 'dir').map {path -> tuple(path.name, path)}
 }
 
 // If just one sample; no channels are needed
@@ -22,9 +22,6 @@ if (params.sample) {
 	tenX_path = params.fastq
 }
 
-String[] bits = params.fastq.split("/");
-String lastOne = bits[bits.length-1];
-println lastOne
 
 // Longranger wgs will generate bam and vcf files. If dry run; it uses samples that already exist (only works on vanja@milou.uppmax.uu.se) 
 if (params.wgs) {
@@ -33,32 +30,32 @@ if (params.wgs) {
 		errorStrategy 'ignore' 
 
 		input:
-		val path from tenX_path
+		set ID, path from tenX_path
 
 		output:
-		set "${path.baseName}_bam", "${path.baseName}_dels_vcf", "${path.baseName}_large_svs_vcf", "${path.baseName}_phased_variants_vcf" into bam_vcf_wgs 
+		set "${ID}_bam", "${ID}_dels_vcf", "${ID}_large_svs_vcf", "${ID}_phased_variants_vcf" into bam_vcf_wgs 
 
 		script:
   
   		if (!params.dry_run){
 
 		"""
-			longranger wgs --id=${path.baseName} --reference=${params.ref} --fastqs=$path  
-			mv ${path.baseName}/outs/dels.vcf.gz ./${path.baseName}_dels_vcf
-			mv ${path.baseName}/outs/phased_possorted_bam.bam ./${path.baseName}_bam
-			mv ${path.baseName}/outs/dels.vcf.gz ./${path.baseName}_dels_vcf
-			mv ${path.baseName}/outs/large_svs.vcf.gz ./${path.baseName}_large_svs_vcf
-			mv ${path.baseName}/outs/phased_variants.vcf.gz ./${path.baseName}_phased_variants_vcf	
+			longranger wgs --id=${ID} --reference=${params.ref} --fastqs=$path  
+			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels_vcf
+			mv ${ID}/outs/phased_possorted_bam.bam ./${ID}_bam
+			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels_vcf
+			mv ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs_vcf
+			mv ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants_vcf	
 		"""
 	
 		}else{
 
 		"""
-			ln -s ${params.wgs_result} ${params.id} 
-			cp ${params.id}/outs/phased_possorted_bam.bam ./bam
-			cp ${params.id}/outs/dels.vcf.gz ./dels_vcf
-			cp ${params.id}/outs/large_svs.vcf.gz ./large_svs_vcf
-			cp ${params.id}/outs/phased_variants.vcf.gz ./phased_variants_vcf
+			ln -s ${params.wgs_result} ${ID} 
+			cp ${ID}/outs/phased_possorted_bam.bam ./bam
+			cp ${ID}/outs/dels.vcf.gz ./dels_vcf
+			cp ${ID}/outs/large_svs.vcf.gz ./large_svs_vcf
+			cp ${ID}/outs/phased_variants.vcf.gz ./phased_variants_vcf
 		"""
 
 		}

@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description=usage)
 
 parser.add_argument(
 	'--sample', 
-	metavar='tenX_sample',
+	#metavar='tenX_sample',
 	dest='tenX_sample',
 	help = 'Path to the 10x-genomics fastq folder',
 	required= False
@@ -25,7 +25,7 @@ parser.add_argument(
 
 parser.add_argument(
 	'--folder', 
-	metavar='tenX_folder',
+	#metavar='tenX_folder',
 	dest='tenX_folder',
 	help = 'If you want to run several 10x-genomic samples at one time, collect all in one folder and enter the path to that folder', 
 	required= False
@@ -33,9 +33,9 @@ parser.add_argument(
 
 parser.add_argument(
 	'--config',
-	metavar = 'config-file',
+	#metavar = 'config-file',
 	dest='config',
-	default= './SVenX_nf.config',
+	default= './SVenX.config',
 	help='Path to configuration file',
 	#type=argparse.FileType('w'),
 	required= False
@@ -66,16 +66,25 @@ parser.add_argument(
 	) 
 
 parser.add_argument(
-	'--variant_calling', 
-	dest= 'variant_calling',
-	help= 'Add if you want to run variant calling',
+	'--TIDDIT', 
+	dest= 'TIDDIT',
+	help= 'Add if you want to run variant calling - TIDDIT',
+	action= 'store_true'
+	)
+
+parser.add_argument(
+	'--CNVnator', 
+	dest= 'CNVnator',
+	help= 'Add if you want to run variant calling - CNVnator',
 	action= 'store_true'
 	)
 
 parser.add_argument(
 	'--annotation', 
 	dest = 'annotation',
-	help= 'Add if you want to run annotations')
+	help= 'Add if you want to run annotations',
+	action= 'store_true'
+	)
 
 parser.add_argument(
 	'--basic',
@@ -90,7 +99,7 @@ parser.add_argument(
 
 parser.add_argument(
 	'--output',
-	metavar = 'Output',
+	#metavar = 'Output',
 	dest='output',
 	default='./SVenX_outs',
 	help='workingDir',
@@ -100,7 +109,7 @@ parser.add_argument(
 
 parser.add_argument(
 	'--nextflow',
-	metavar = 'nextflow',
+	#metavar = 'nextflow',
 	dest='nf',
 	default= '~/nextflow', 
 	help='path to program nextflow',
@@ -110,7 +119,7 @@ parser.add_argument(
 
 parser.add_argument(
 	'--wgs_script',
-	metavar = 'longranger_wgs.nf',
+	#metavar = 'longranger_wgs.nf',
 	dest='wgs_script_nf',
 	default= 'longranger_wgs.nf',
 	help='Path to longranger wgs nextflow script',
@@ -120,7 +129,7 @@ parser.add_argument(
 
 parser.add_argument(
 	'--vep_script',
-	metavar = 'vep.nf',
+	#metavar = 'vep.nf',
 	dest='vep_script_nf',
 	default= 'VEP.nf',
 	help='Path to VEP nextflow script',
@@ -129,8 +138,28 @@ parser.add_argument(
 	)
 
 parser.add_argument(
+	'--TIDDIT_script',
+	metavar = 'TIDDIT.nf',
+	dest='TIDDIT_script_nf',
+	default= 'TIDDIT.nf',
+	help='Path to TIDDIT nextflow script',
+	#type=argparse.FileType('w'),
+	required= False
+	)
+
+parser.add_argument(
+	'--CNVnator_script',
+	#metavar = 'CNVnator.nf',
+	dest='CNVnator_script_nf',
+	default= 'CNVnator.nf',
+	help='Path to CNVnator nextflow script',
+	#type=argparse.FileType('w'),
+	required= False
+	)
+
+parser.add_argument(
 	'--init_wgs_vep',
-	metavar = 'initiate_wgs_vep',
+	#metavar = 'initiate_wgs_vep',
 	dest='init_wgs_vep',
 	default= './init_wgs_vep.sh',
 	help='Path to wgs_vep initiate script; init_wgs_vep.sh',
@@ -148,13 +177,27 @@ tenX_sample = args.tenX_sample
 dry_run = args.dryrun
 wgs = args.l_wgs
 vep = args.vep 
-variant_calling = args.variant_calling
+TIDDIT = args.TIDDIT
+CNVnator = args.CNVnator
 annotation = args.annotation
 basic = args.l_basic
 
 # defining lists, strings etc. 
 folder_list = []
 tenX_type = ''
+program_list = []
+
+# create list of programs that will be executed
+if wgs:
+	program_list.append('wgs')
+if vep:
+	program_list.append('vep')	
+if TIDDIT:
+	program_list.append('TIDDIT')
+if CNVnator:
+	program_list.append('CNVnator')	
+if annotation:
+	program_list.append('annotation')		
 
 ############################ CHECK SAMPLE CONTENTS -FUNCTIONS ################################## 
 
@@ -234,43 +277,73 @@ def check_sample (sample_file):
 	return(sample_file)
 
 
-#################################### FUNCTION LONGRANGER WGS - VEP #############################################################
+#################################### FUNCTION CREATE SCRIPT #################################################################
 
-def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type):
+def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annotation_script, program_list)
+	
+	print 'Creating nextflow script'
+	with open('SVenX.nf', 'w') as outfile:
+		
+		if wgs in program_list:
+			subprocess.call('cat ' + str(wgs_script), shell=True, stdout=outfile)
+		if vep in program_list:
+			subprocess.call('cat '+ str(vep_script), shell=True, stdout=outfile)
+		if TIDDIT in program_list:
+			subprocess.call('cat '+ str(TIDDIT_script), shell=True, stdout=outfile)
+		if CNVnator in program_list:
+			subprocess.call('cat '+ str(CNVnator_script), shell=True, stdout=outfile)
+		if annotation in program_list:
+			subprocess.call('cat '+ str(annotation_script), shell=True, stdout=outfile)
 
-	print 'Creating wgs-vep script'
-
-	# Create script
-	with open('wgs_vep.nf', 'w') as outfile:
-		subprocess.call('cat ' + str(wgs_script), shell=True, stdout=outfile)
-		subprocess.call('cat '+ str(vep_script), shell=True, stdout=outfile)
 		print 'Script completed'
 
-	subprocess.call('chmod +x ' + sh_init_script, shell=True)
+
+#################################### FUNCTION LONGRANGER WGS - VEP #############################################################
+
+def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type)
 	
 	# initiate longranger wgs and vep in nextflow
 	if dry_run:
-		print 'Initiating dryrun'
+		print 'Initiating dry run'
 		process = [sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type, '--dry_run']
 		os.system(" ".join(process))
 
 		#subprocess.call(str(sh_init_script) + " " + str(nextflow_path) + ' wgs_vep.nf ' + str(sample) + " " + str(config) + " " + str(output) + " " + str(sample_type) + ' --dry_run', shell = True)
 
 	else: 
-		subprocess.call([sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type], shell = True)
+		print 'initiating longranger wgs and vep'
+		process = [sh_init_script, nextflow_path, 'wgs_vep.nf', sample, config, output, sample_type]
+		os.system(" ".join(process))
 
-		print 'Longranger wgs and vep have successfully been executed'	
+	print 'Longranger wgs and vep have successfully been executed'	
 
 
+#################################### FUNCTION LONGRANGER WGS - TIDDIT - CNVnator ###################################
+
+def wgs_TIDDIT_CNVnator (sh_init_script, nextflow_path, wgs_script, TIDDIT_script, CNVnator_script, sample, config, output, sample_type):
+
+	print 'Creating wgs-TIDDDIT-CNVnator script'
+
+	# Create nextflow script
+	with open('wgs_TIDDIT_CNVnator.nf', 'w') as outfile:
+		subprocess.call('cat ' + str(wgs_script), shell=True, stdout=outfile)
+		subprocess.call('cat '+ str(TIDDIT_script), shell=True, stdout=outfile)
+		subprocess.call('cat '+ str(CNVnator_script), shell=True, stdout=outfile)
+		print 'Script completed'
+
+	if dry_run:
+		print 'Initiating dry run'
+		process = [sh_init_script, nextflow_path, 'wgs_TIDDIT_CNVnator.nf', sample, config, output, sample_type, '--dry_run']
+		os.system(" ".join(process))
+
+		#subprocess.call(str(sh_init_script) + " " + str(nextflow_path) + ' wgs_vep.nf ' + str(sample) + " " + str(config) + " " + str(output) + " " + str(sample_type) + ' --dry_run', shell = True)
+
+	else: 
+		print 'initiating longranger wgs and vep'
+		process = [sh_init_script, nextflow_path, 'wgs_TIDDIT_CNVnator.nf', sample, config, output, sample_type]
+		os.system(" ".join(process))	
 
 
-'''
-def wgs_vep (sh_init_script, nextflow_path, wgs_script, vep_script, sample, config, output, sample_type):
-	process1 = ['cat', wgs_script, '>>', 'wgs_vep.nf', '|', 'cat', vep_script, '>>', 'wgs_vep.nf']
-	os.system(" ".join(process1))
-	process2 = [sh_init_script, nextflow_path, './wgs_vep.nf', sample, config, output, sample_type]
-	os.system(" ".join(process2))
-'''
 
 #################################### INITIATE LONGRANGER WGS AND BASIC -FUNCTIONS ##################################
 
@@ -314,14 +387,35 @@ if tenX_folder:
 	if folder_complete:
 		print('\nAll samples are checked and complete.')
 
-# I a sample of 10x data - this sample will be checked if it coiontain all fastq-files needed. 
+# I a sample of 10x data - this sample will be checked if it contain all fastq-files needed. 
 if tenX_sample:
 	folder_complete = check_sample(tenX_sample)
 	tenX_type = '--sample' 
 	if folder_complete:
-		print('\nThe sample is checked and complete')			
+		print('\nThe sample is checked and complete')		
 
+##########################################################################
+###################### create script - continue ##########################
+########################################################################## 
+
+make_script = create_script() 			
+
+# create and launch longranger wgs and wep
 if wgs and vep:
 	initiate_wgs_vep = wgs_vep(args.init_wgs_vep, args.nf, args.wgs_script_nf, args.vep_script_nf, folder_complete, args.config, args.output, tenX_type) 
 	print 'wgs and vep executed'
 
+if wgs and vep and TIDDIT and CNVnator and annotation:
+	pass
+
+elif wgs and vep and TIDDIT and CNVnator:
+	pass	
+
+# create and 
+elif wgs and TIDDIT and CNVnator:
+	initiate_wgs_TIDDIT_CNVnator = wgs_TIDDIT_CNVnator(sh_init_script, nextflow_path, wgs_script, args.TIDDIT_script_nf, args.CNVnator_script_nf, sample, config, output, sample_type)
+
+# create and launch longranger wgs and wep
+elif wgs and vep:
+	initiate_wgs_vep = wgs_vep(args.init_wgs_vep, args.nf, args.wgs_script_nf, args.vep_script_nf, folder_complete, args.config, args.output, tenX_type) 
+	print 'wgs and vep executed'

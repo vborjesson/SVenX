@@ -16,5 +16,4 @@
 #module load longranger
 #module load vep
 
-ls -l $3 | while read line; do  echo $line | sed s/$/.sample/; done
 $1 $2 --fastq $3 --wgs -c $4 --workingDir $5 $6 $7
