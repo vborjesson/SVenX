@@ -15,157 +15,24 @@ usage = '''SVenX takes fastq-samples generated from 10x-genomics and execute Ass
 
 parser = argparse.ArgumentParser(description=usage)
 
-parser.add_argument(
-	'--sample', 
-	#metavar='tenX_sample',
-	dest='tenX_sample',
-	help = 'Path to the 10x-genomics fastq folder',
-	required= False
-	)
-
-parser.add_argument(
-	'--folder', 
-	#metavar='tenX_folder',
-	dest='tenX_folder',
-	help = 'If you want to run several 10x-genomic samples at one time, collect all in one folder and enter the path to that folder', 
-	required= False
-	)
-
-parser.add_argument(
-	'--config',
-	#metavar = 'config-file',
-	dest='config',
-	default= './SVenX_nf.config',
-	help='Path to configuration file',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--dryrun',
-	dest = 'dryrun',
-	help = 'Add if you want to perform a dry run (good if testing pipeline)',
-	action = 'store_true'
-	)
-
-parser.add_argument(
-	'--wgs',
-	#metavar = 'Longranger_wgs',
-	dest='l_wgs',
-	help= 'Add if you want to run longranger wgs',
-	action='store_true',
-	#type=argparse.FileType('r'),
-	#required= False
-	)
-
-parser.add_argument(
-	'--vep',
-	dest='vep',
-	help= 'Add if you want to run vep',
-	action = 'store_true'
-	) 
-
-parser.add_argument(
-	'--TIDDIT', 
-	dest= 'TIDDIT',
-	help= 'Add if you want to run variant calling - TIDDIT',
-	action= 'store_true'
-	)
-
-parser.add_argument(
-	'--CNVnator', 
-	dest= 'CNVnator',
-	help= 'Add if you want to run variant calling - CNVnator',
-	action= 'store_true'
-	)
-
-parser.add_argument(
-	'--annotation', 
-	dest = 'annotation',
-	help= 'Add if you want to run annotations',
-	action= 'store_true'
-	)
-
-parser.add_argument(
-	'--basic',
-	#metavar = 'Longranger_wgs',
-	dest='l_basic',
-	help= 'Add if you want to run longranger basic',
-	action='store_true',
-	#type=argparse.FileType('r'),
-	#required= False
-	)
-
-
-parser.add_argument(
-	'--output',
-	#metavar = 'Output',
-	dest='output',
-	default='./SVenX_outs',
-	help='workingDir',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--nextflow',
-	#metavar = 'nextflow',
-	dest='nf',
-	default= '~/nextflow', 
-	help='path to program nextflow',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--wgs_script',
-	#metavar = 'longranger_wgs.nf',
-	dest='wgs_script_nf',
-	default= 'longranger_wgs.nf',
-	help='Path to longranger wgs nextflow script',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--vep_script',
-	#metavar = 'vep.nf',
-	dest='vep_script_nf',
-	default= 'VEP.nf',
-	help='Path to VEP nextflow script',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--TIDDIT_script',
-	metavar = 'TIDDIT.nf',
-	dest='TIDDIT_script_nf',
-	default= 'TIDDIT.nf',
-	help='Path to TIDDIT nextflow script',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--CNVnator_script',
-	#metavar = 'CNVnator.nf',
-	dest='CNVnator_script_nf',
-	default= 'CNVnator.nf',
-	help='Path to CNVnator nextflow script',
-	#type=argparse.FileType('w'),
-	required= False
-	)
-
-parser.add_argument(
-	'--launch_SVenX_nf',
-	#metavar = 'initiate_wgs_vep',
-	dest='launch_SVenX_nf',
-	default= 'launch_SVenX.sh',
-	help='Path to SVenX nextflow launching script; launch_SVenX.sh',
-	#type=argparse.FileType('w'),
-	required= False
-	)
+parser.add_argument('--sample', dest='tenX_sample', help = 'Path to the 10x-genomics fastq folder', required= False)
+parser.add_argument('--folder', dest='tenX_folder', help = 'If you want to run several 10x-genomic samples at one time, collect all in one folder and enter the path to that folder', required= False)
+parser.add_argument('--config', dest='config', default= 'SVenX.conf', help='Path to configuration file', required= False)
+parser.add_argument('--dryrun', dest = 'dryrun', help = 'Add if you want to perform a dry run (good if testing pipeline)', action = 'store_true')
+parser.add_argument('--wgs', dest='l_wgs', help= 'Add if you want to run longranger wgs', action='store_true', required= False)
+parser.add_argument('--vep', dest='vep', help= 'Add if you want to run vep', action = 'store_true') 
+parser.add_argument('--TIDDIT', dest= 'TIDDIT', help= 'Add if you want to run variant calling - TIDDIT', action= 'store_true')
+parser.add_argument('--CNVnator', dest= 'CNVnator', help= 'Add if you want to run variant calling - CNVnator', action= 'store_true')
+parser.add_argument('--annotation', dest = 'annotation', help= 'Add if you want to run annotations', action= 'store_true')
+parser.add_argument('--basic', dest='l_basic', help= 'Add if you want to run longranger basic', action='store_true', required= False)
+parser.add_argument('--output', dest='output', default='./SVenX_outs', help='workingDir', required= False)
+parser.add_argument('--nextflow', dest='nf', default= '~/nextflow', help='path to program nextflow', required= False)
+parser.add_argument('--wgs_script', dest='wgs_script_nf', default= 'longranger_wgs.nf', help='Path to longranger wgs nextflow script', required= False)
+parser.add_argument('--vep_script', dest='vep_script_nf', default= 'VEP.nf', help='Path to VEP nextflow script', required= False)
+parser.add_argument('--TIDDIT_script', metavar = 'TIDDIT.nf', dest='TIDDIT_script_nf', default= 'TIDDIT.nf', help='Path to TIDDIT nextflow script', required= False)
+parser.add_argument('--CNVnator_script', dest='CNVnator_script_nf', default= 'CNVnator.nf', help='Path to CNVnator nextflow script', required= False)
+parser.add_argument('--annotation_script', dest='annotation_script_nf', default= 'annotation.nf', help='Path to annotation nextflow script', required= False)
+parser.add_argument('--launch_SVenX_nf', dest='launch_SVenX_nf', default= './launch_SVenX.sh', help='Path to SVenX nextflow launching script; launch_SVenX.sh', required= False)
 
 
 args = parser.parse_args()
@@ -243,7 +110,6 @@ def check_folders (folder_file):
 		sys.exit()	
 	
 	else:
-		print folder_file
 		return(folder_file)	
 
 
@@ -279,24 +145,24 @@ def check_sample (sample_file):
 
 #################################### FUNCTION CREATE SCRIPT #################################################################
 
-def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annotation_script, program_list)
+def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annotation_script, program_list):
 	
 	print 'Creating nextflow script'
 	with open('SVenX.nf', 'w') as outfile:
 		
-		if wgs in program_list:
+		if ('wgs' in program_list):
 			subprocess.call('cat ' + str(wgs_script), shell=True, stdout=outfile)
 			print 'Longranger wgs was added to the SVenX script'
-		if vep in program_list:
+		if ('vep' in program_list):
 			subprocess.call('cat '+ str(vep_script), shell=True, stdout=outfile)
 			print 'VEP was added to the SVenX script'
-		if TIDDIT in program_list:
+		if ('TIDDIT' in program_list):
 			subprocess.call('cat '+ str(TIDDIT_script), shell=True, stdout=outfile)
 			print 'TIDDIT was added to the SVenX script'
-		if CNVnator in program_list:
+		if ('CNVnator' in program_list):
 			subprocess.call('cat '+ str(CNVnator_script), shell=True, stdout=outfile)
 			print 'CNVnator was added to the SVenX script'
-		if annotation in program_list:
+		if ('annotation' in program_list):
 			subprocess.call('cat '+ str(annotation_script), shell=True, stdout=outfile)
 			print 'Annotation programs was added to the SVenX script'
 
@@ -305,19 +171,21 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 
 #################################### FUNCTION LAUNCHING SVENX.NF #############################################################
 
-def launch_script (sh_init_script, nextflow_path, sample, config, output, sample_type)
+def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sample_type):
 	
+	subprocess.call('chmod +x ' + str(launch_SVenX_nf), shell = True) 
+
 	# initiate longranger wgs and vep in nextflow
 	if dry_run:
 		print 'Initiating dry run'
-		process = [sh_init_script, nextflow_path, sample, config, output, sample_type, '--dry_run']
+		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type, '--dry_run']
 		os.system(" ".join(process))
 
 		#subprocess.call(str(sh_init_script) + " " + str(nextflow_path) + ' wgs_vep.nf ' + str(sample) + " " + str(config) + " " + str(output) + " " + str(sample_type) + ' --dry_run', shell = True)
 
 	else: 
-		print 'initiating longranger wgs and vep'
-		process = [sh_init_script, nextflow_path, sample, config, output, sample_type]
+		print 'launching SVenX in nextflow'
+		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type]
 		os.system(" ".join(process))	
 
 
@@ -354,8 +222,8 @@ if tenX_sample:
 # Create a nextflow script with all selected programs
 # Launch SVenX in nextflow
 if program_list != '':
-	make_script = create_script(wgs_script, vep_script, TIDDIT_script, CNVnator_script, annotation_script, program_list) 			
-	execute = launch_script(args.launch_SVenX_nf, args.nf, args.wgs_script_nf, args.vep_script_nf, folder_complete, args.config, args.output, tenX_type)
+	make_script = create_script(args.wgs_script_nf, args.vep_script_nf, args.TIDDIT_script_nf, args.CNVnator_script_nf, args.annotation_script_nf, program_list) 			
+	execute = launch_script(args.launch_SVenX_nf, args.nf, folder_complete, args.config, args.output, tenX_type)
 
 # If no programs was selected, message:
 if program_list == '':
