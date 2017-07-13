@@ -25,6 +25,7 @@ parser.add_argument('--TIDDIT', dest= 'TIDDIT', help= 'Add if you want to run va
 parser.add_argument('--CNVnator', dest= 'CNVnator', help= 'Add if you want to run variant calling - CNVnator', action= 'store_true')
 parser.add_argument('--annotation', dest = 'annotation', help= 'Add if you want to run annotations', action= 'store_true')
 parser.add_argument('--basic', dest='l_basic', help= 'Add if you want to run longranger basic', action='store_true', required= False)
+
 parser.add_argument('--output', dest='output', default='./SVenX_outs', help='workingDir', required= False)
 parser.add_argument('--nextflow', dest='nf', default= '~/nextflow', help='path to program nextflow', required= False)
 parser.add_argument('--wgs_script', dest='wgs_script_nf', default= 'longranger_wgs.nf', help='Path to longranger wgs nextflow script', required= False)
@@ -181,7 +182,7 @@ def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sampl
 		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type, '--dry_run']
 		os.system(" ".join(process))
 
-		#subprocess.call(str(sh_init_script) + " " + str(nextflow_path) + ' wgs_vep.nf ' + str(sample) + " " + str(config) + " " + str(output) + " " + str(sample_type) + ' --dry_run', shell = True)
+		
 
 	else: 
 		print 'launching SVenX in nextflow'
