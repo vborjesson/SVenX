@@ -3,15 +3,17 @@ import os
 import subprocess
 import sys
 
-x = False
+answer = False
 
-print 'SVenX setup'
-print 'Follow the instructions in this setup and answer the questions when needed'
+print '\n###################################################################################'
+print '\n             SVenX setup'
+print '\n###################################################################################'
+print ('\nFollow the instructions in this setup script and answer the questions when needed.')
 
 # GENERAL
 
 # Nextflow
-print ('/nParts of SVenX is written in Nextflow, in order to run it, nextflow needs to be installed')
+print ('\nParts of SVenX is written in Nextflow, in order to run it nextflow needs to be installed.')
 print 'Is nextflow installed? yes/no'
 while answer is False:
     selection=raw_input()
@@ -21,7 +23,7 @@ while answer is False:
     if selection == 'YES' or selection == 'yes':
         answer = True  
     else:
-        print 'Invalid syntax, please enter yes or no'    
+        print'Invalid syntax, please enter yes or no'    
 
 # Uppmax or not, important when installing modules or programs.
 print 'Do you plan to run SVenX on UPPMAX? yes/no'
@@ -38,7 +40,7 @@ while answer is False:
         print 'Invalid syntax, please enter yes or no'       
 
 if not uppmax:
-    print 'Longranger needs to be installed before running SVenX. Information about how to install it can be found at https://support.10xgenomics.com.'
+    print '\nLongranger needs to be installed before running SVenX. Information about how to install it can be found at https://support.10xgenomics.com.'
     print 'Is longranger installed? yes/no'
     answer = False
     while answer is False:
@@ -51,13 +53,14 @@ if not uppmax:
         else:
             print 'Invalid syntax, please enter yes or no'
 
+#SVenXDirectory = os 
 SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(SVenXDirectory,"SVenX_nf.config"), 'r') as myfile:
     template=myfile.read()
 
-print 'General information needed in order to run Longranger'    
+print '\nGeneral information needed in order to run Longranger.'    
 
-print "/nEnter standard output directory, the path is set to SVenX_outs if left empty"
+print "\nEnter standard output directory, the path is set to SVenX_outs if left empty"
 selection=raw_input()
 if selection == "":
     selection == "SVenX_outs"
@@ -68,10 +71,30 @@ selection=raw_input()
 template=template.replace("{ref_genome}", "\'{}\'".format(selection) )
 
 
-print 'TIDDIT'
-# SV - TIDDIT
+# VEP 
+print "Do you want to run VEP? yes/no"
+selection = raw_input()
+if selection == "yes" or selection == "YES": 
+    answer == False
+    if uppmax:
+        answer == True
+    if not uppmax:
+        print '\nIn order to run VEP it has to be installed. Information about how to install it can be found at VEP ENSMBLE website.'
+        print '\nIs VEP installed? yes/no'        
+        while answer is False:
+            selection=raw_input()
+            if selection == 'NO' or selection == 'no':
+                print('\nPlease install VEP and then run setup.py once again')
+                sys.exit()  
+            if selection == 'YES' or selection == 'yes':
+                answer = True  
+            else:
+                print 'Invalid syntax, please enter yes or no'
 
-print "TIDDIT needs to be installed in order to run it. If you have already installed TIDDIT, please answer no."
+
+# TIDDIT
+
+print "\nTIDDIT needs to be installed in order to run it. If you have already installed TIDDIT, please answer no."
 print "Do you want to install TIDDIT? yes/no"
 selection = raw_input()
 if selection == 'yes' or selection == 'YES':
@@ -82,7 +105,7 @@ if selection == 'yes' or selection == 'YES':
     template=template.replace("{TIDDIT_path}", "\'{}\'".format(os.path.join(SVenXDirectory,"TIDDIT/bin/TIDDIT")) )
 
 # SV - CNVnator
-print "Do you want to run CNVnator? yes/no"
+print "\nDo you want to run CNVnator? yes/no"
 selection = raw_input()
 if selection == "yes" or selection == "YES": 
     answer == Flase

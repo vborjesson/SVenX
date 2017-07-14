@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description=usage)
 
 parser.add_argument('--sample', dest='tenX_sample', help = 'Path to the 10x-genomics fastq folder', required= False)
 parser.add_argument('--folder', dest='tenX_folder', help = 'If you want to run several 10x-genomic samples at one time, collect all in one folder and enter the path to that folder', required= False)
-parser.add_argument('--config', dest='config', default= 'SVenX.conf', help='Path to configuration file', required= False)
+parser.add_argument('--config', dest='config', default= 'SVenX.config', help='Path to configuration file', required= False)
 parser.add_argument('--dryrun', dest = 'dryrun', help = 'Add if you want to perform a dry run (good if testing pipeline)', action = 'store_true')
 parser.add_argument('--wgs', dest='l_wgs', help= 'Add if you want to run longranger wgs', action='store_true', required= False)
 parser.add_argument('--vep', dest='vep', help= 'Add if you want to run vep', action = 'store_true') 
@@ -28,11 +28,11 @@ parser.add_argument('--basic', dest='l_basic', help= 'Add if you want to run lon
 
 parser.add_argument('--output', dest='output', default='./SVenX_outs', help='workingDir, is set to SVenX_outs as a default', required= False)
 parser.add_argument('--nextflow', dest='nf', default= '~/nextflow', help='path to program nextflow, is set to ~/nextflow as default', required= False)
-parser.add_argument('--wgs_script', dest='wgs_script_nf', default= '/nextflow_scripts/longranger_wgs.nf', help='Path to longranger wgs nextflow script, is set to script', required= False)
-parser.add_argument('--vep_script', dest='vep_script_nf', default= '/nextflow_scripts/VEP.nf', help='Path to VEP nextflow script', required= False)
-parser.add_argument('--TIDDIT_script', metavar = 'TIDDIT.nf', dest='/nextflow_scripts/TIDDIT_script_nf', default= 'TIDDIT.nf', help='Path to TIDDIT nextflow script', required= False)
-parser.add_argument('--CNVnator_script', dest='CNVnator_script_nf', default= '/nextflow_scripts/CNVnator.nf', help='Path to CNVnator nextflow script', required= False)
-parser.add_argument('--annotation_script', dest='annotation_script_nf', default= '/nextflow_scripts/annotation.nf', help='Path to annotation nextflow script', required= False)
+parser.add_argument('--wgs_script', dest='wgs_script_nf', default= 'nextflow_scripts/longranger_wgs.nf', help='Path to longranger wgs nextflow script, is set to script', required= False)
+parser.add_argument('--vep_script', dest='vep_script_nf', default= 'nextflow_scripts/VEP.nf', help='Path to VEP nextflow script', required= False)
+parser.add_argument('--TIDDIT_script', dest='TIDDIT_script_nf', default= 'nextflow_scripts/TIDDIT.nf', help='Path to TIDDIT nextflow script', required= False)
+parser.add_argument('--CNVnator_script', dest='CNVnator_script_nf', default= 'nextflow_scripts/CNVnator.nf', help='Path to CNVnator nextflow script', required= False)
+parser.add_argument('--annotation_script', dest='annotation_script_nf', default= 'nextflow_scripts/annotation.nf', help='Path to annotation nextflow script', required= False)
 parser.add_argument('--launch_SVenX_nf', dest='launch_SVenX_nf', default= './launch_SVenX.sh', help='Path to SVenX nextflow launching script; launch_SVenX.sh, is set to ./launch_SVenX.sh', required= False)
 
 

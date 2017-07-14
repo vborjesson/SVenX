@@ -20,6 +20,8 @@ If TIDDIT:
   just follow the instructions in setup.py
 
 If CNV:   
+  If you are using UPPMAX, only load the module in your launching bash script. See SVenX.sh. And setup a reference directory.
+  If you are not working on UPPMAX, please install the CNVnator from https://github.com/abyzovlab/CNVnatorat.
 
 Choose programs below that you would like to include in the SVenX-pipe
 
@@ -89,6 +91,21 @@ Run
 -Add plots of SVs?
 -Other cool stuff?   
 ```
+2017-07-14
+Today I made a setup.py script. This script takes raw_input and set it as a template in a template config file that allready exist and make a new one called SVenX.conf. 
+One problem is all the programs that needs several step installations and changes in root-system. Me and Jesper decided not to add the installation steps in this script. If the user wants to run that specific program he or she has to install it himself/herself. If using Uppmax this will not be as big of a problem.
+
+Note til next time:
+When testing the setup script, instead of returing /home/vanja/Master... it returns /??/???/vanja/Mast...
+
+when trying to run the pipe with --wgs and --dryrun;
+
+WARN: File `/home/vanja/MasterProject/fastq_data/TenX_folder/sample_1` is out of the scope of process working dir: /pica/h1/vanja/MasterProject/TEST_SVENX/SVenX/work/f0/0d1383d10cf8a7ae41cc3417bd6622 -- Error is ignored
+
+Tested with --folder which works fine! something wrong with --sample?
+
+next time; continue with setup.py. 
+
 ---
 
 - 
