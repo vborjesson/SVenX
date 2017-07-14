@@ -1,7 +1,7 @@
 
 //------------------------------TIDDIT----------------------------------    
 
-TIDDIT_exec_file = file( "${params.TIDDIT_path}" )
+TIDDIT_exec_file = file( "${params.tiddit_path}" )
 
 process TIDDIT {
     publishDir "${params.working_dir}", mode: 'copy', overwrite: true
