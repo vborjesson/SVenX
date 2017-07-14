@@ -182,8 +182,6 @@ def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sampl
 		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type, '--dry_run']
 		os.system(" ".join(process))
 
-		
-
 	else: 
 		print 'launching SVenX in nextflow'
 		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type]
@@ -191,16 +189,16 @@ def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sampl
 
 
 
-################################### TERMINAL MESSAGE #############################################################
+######################################## TERMINAL MESSAGE #############################################################
 
 print('\n--------------------------------------------------------------------------------------------------------\n')
 print('SVenX')
 print('Version: 0.0.0') 
 print('Author: Vanja Borjesson') 
-print('Usage: https://github.com/vborjesson/MasterProject.git \n')
+print('Usage: https://github.com/vborjesson/SVenX.git \n')
 print('---------------------------------------------------------------------------------------------------------\n') 
 
-#################################### MAIN SCRIPT -  ###############################################
+######################################### MAIN SCRIPT ############################################################
 
 # If no sample added: message	
 if not (tenX_folder or tenX_sample):

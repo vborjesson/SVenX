@@ -1,26 +1,39 @@
 # SVenX
 
 
-This is a pipeline in progress. It will include longranger wgs and basic, FindSV, CNVnator, TIDDIT, SVDB, several ANNOTATION steps and more. 
+This is a pipeline in progress. It will include longranger wgs and basic, CNVnator, several ANNOTATION steps and more. 
 ---
 SVenX is a program that takes in fastq-files (single samples or folder of several samples) generated from 10x-genomics, and execute Longranger WGS, Longranger BASIC, VEP, FindSV.. and more. 
 
 In order to run this program you will need to set up an environment. 
-Softwares; longranger + refdata (see https://www.10xgenomics.com), VEP + cache file (VEP ENSMBLE website) and nextflow
+Nextflow needs to be downloaded. 
 
-Choose one of the following:
-Longranger wgs - Vep
-Longranger wgs - Vep - SV 
-Longranger wgs - Vep - SV - annotation
-Longranger wgs - SV 
-Longrangre wgs - annotation 
-Longranger wgs - SV - annotation 
+For all programs, Nextflow needs to be installed (https://www.nextflow.io/docs/latest/getstarted.html)
+
+If Longranger wgs:  
+  Softwares; longranger + refdata (see https://www.10xgenomics.com), 
+
+if VEP:
+  VEP + cache file (VEP ENSMBLE website)
+
+If TIDDIT:
+  just follow the instructions in setup.py
+
+If CNV:   
+
+Choose programs below that you would like to include in the SVenX-pipe
+
+Longranger wgs 
+VEP
+TIDDIT
+CNVnator
+annotations
  
 special: SV and annotation combine!
 
-
 Clone this repository. 
 Use SVenX.sh and add the desired parameters;
+
 ```
 usage: SVenX_main.py [-h] [--sample TENX_SAMPLE] [--folder TENX_FOLDER]
                      [--config CONFIG] [--dryrun] [--wgs] [--vep] [--TIDDIT]
