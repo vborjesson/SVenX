@@ -55,7 +55,7 @@ if not uppmax:
 
 #SVenXDirectory = os 
 SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(SVenXDirectory,"SVenX_nf.config"), 'r') as myfile:
+with open(os.path.join(SVenXDirectory,"/template/SVenX_nf.config"), 'r') as myfile:
     template=myfile.read()
 
 print '\nGeneral information needed in order to run Longranger.'    

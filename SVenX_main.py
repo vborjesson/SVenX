@@ -17,7 +17,7 @@ parser = argparse.ArgumentParser(description=usage)
 
 parser.add_argument('--sample', dest='tenX_sample', help = 'Path to the 10x-genomics fastq folder', required= False)
 parser.add_argument('--folder', dest='tenX_folder', help = 'If you want to run several 10x-genomic samples at one time, collect all in one folder and enter the path to that folder', required= False)
-parser.add_argument('--config', dest='config', default= 'SVenX.config', help='Path to configuration file', required= False)
+parser.add_argument('--config', dest='config', default= 'SVenX.conf', help='Path to configuration file', required= False)
 parser.add_argument('--dryrun', dest = 'dryrun', help = 'Add if you want to perform a dry run (good if testing pipeline)', action = 'store_true')
 parser.add_argument('--wgs', dest='l_wgs', help= 'Add if you want to run longranger wgs', action='store_true', required= False)
 parser.add_argument('--vep', dest='vep', help= 'Add if you want to run vep', action = 'store_true') 
@@ -226,5 +226,5 @@ if program_list != '':
 
 # If no programs was selected, message:
 if program_list == '':
-	print 'No programs was selected. If you want to run any programs, please add as arguments when running SVenX. Please use SVenX_main.py -h for further information and options'
+	print 'No programs was selected. If you want to run any programs, please add program as argument when running SVenX. Please use SVenX_main.py -h for further information and options'
 
