@@ -19,8 +19,14 @@ if (params.folder) {
 
 // If just one sample; no channels are needed
 if (params.sample) {
-	tenX_path = params.fastq
+	String character = "/*";
+	String folder_path = params.fastq;
+	sample_path =folder_path;
+	//System.out.println(otherString);
+	tenX_path = Channel.fromPath(sample_path, type: 'dir').map {path -> tuple(path.name, path)}
 }
+
+// tenX_path = params.fastq
 
 
 // Longranger wgs will generate bam and vcf files. If dry run; it uses samples that already exist (only works on vanja@milou.uppmax.uu.se) 
@@ -52,14 +58,13 @@ if (params.wgs) {
 
 		"""
 			ln -s ${params.wgs_result} ${ID} 
-			cp ${ID}/outs/phased_possorted_bam.bam ./bam
-			cp ${ID}/outs/dels.vcf.gz ./dels_vcf
-			cp ${ID}/outs/large_svs.vcf.gz ./large_svs_vcf
-			cp ${ID}/outs/phased_variants.vcf.gz ./phased_variants_vcf
+			cp ${ID}/outs/phased_possorted_bam.bam ./${ID}_bam
+			cp ${ID}/outs/dels.vcf.gz ./${ID}_dels_vcf
+			cp ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs_vcf
+			cp ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants_vcf
 		"""
 
 		}
 	}
 }
-
 

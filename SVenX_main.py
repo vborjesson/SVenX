@@ -119,7 +119,7 @@ def check_folders (folder_file):
 
 def check_sample (sample_file):
 	fastq_list = os.listdir(sample_file)
-	print 'the sample ', sample_file.split('/')[-1], 'will be checked if it is complete'
+	print 'the sample', sample_file.split('/')[-1], 'will be checked if it is complete'
 	if len(fastq_list) == 3: 
 		I1 = False
 		R1 = False
@@ -167,7 +167,7 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 			subprocess.call('cat '+ str(annotation_script), shell=True, stdout=outfile)
 			print 'Annotation programs was added to the SVenX script'
 
-		print 'Script completed'
+		print 'Script completed\n'
 
 
 #################################### FUNCTION LAUNCHING SVENX.NF #############################################################
@@ -209,14 +209,14 @@ if tenX_folder:
 	folder_complete = check_folders(tenX_folder)
 	tenX_type = '--folder' 			
 	if folder_complete:
-		print('\nAll samples are checked and complete.')
+		print('\nAll samples are checked and complete.\n')
 
 # I a sample of 10x data - this sample will be checked if it contain all fastq-files needed. 
 if tenX_sample:
 	folder_complete = check_sample(tenX_sample)
 	tenX_type = '--sample' 
 	if folder_complete:
-		print('\nThe sample is checked and complete')
+		print('\nThe sample is checked and complete\n')
 
 # Create a nextflow script with all selected programs
 # Launch SVenX in nextflow

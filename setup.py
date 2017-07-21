@@ -55,15 +55,19 @@ if not uppmax:
 
 #SVenXDirectory = os 
 SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
-with open(os.path.join(SVenXDirectory,"/template/SVenX_nf.config"), 'r') as myfile:
+with open(os.path.join(SVenXDirectory,"template/SVenX_template.config"), 'r') as myfile:
     template=myfile.read()
 
-print '\nGeneral information needed in order to run Longranger.'    
+print '\nGeneral information needed in order to run Longranger.' 
+print 'This is my current working dir', SVenXDirectory
+
+print '\nGeneral information needed in order to run Longranger.' 
+
 
 print "\nEnter standard output directory, the path is set to SVenX_outs if left empty"
 selection=raw_input()
 if selection == "":
-    selection == "SVenX_outs"
+    selection = os.path.join(SVenXDirectory,"SVenX_outs")
 template=template.replace("{working_dir}", "\'{}\'".format(selection) )
 
 print "Set the path to the reference genome hg 19"
@@ -75,9 +79,9 @@ template=template.replace("{ref_genome}", "\'{}\'".format(selection) )
 print "Do you want to run VEP? yes/no"
 selection = raw_input()
 if selection == "yes" or selection == "YES": 
-    answer == False
+    answer = False
     if uppmax:
-        answer == True
+        answer = True
     if not uppmax:
         print '\nIn order to run VEP it has to be installed. Information about how to install it can be found at VEP ENSMBLE website.'
         print '\nIs VEP installed? yes/no'        
@@ -108,9 +112,9 @@ if selection == 'yes' or selection == 'YES':
 print "\nDo you want to run CNVnator? yes/no"
 selection = raw_input()
 if selection == "yes" or selection == "YES": 
-    answer == Flase
+    answer = False
     if uppmax:
-        answer == True
+        answer = True
     if not uppmax:
         print 'In order to run CNVnator it has to be installed. Information about how to install it can be found at https://github.com/abyzovlab/CNVnatorat .'
         print 'Is CNVnator installed? yes/no'        
@@ -148,10 +152,9 @@ if selection == "yes" or selection == "YES":
         template=template.replace("{CNVnator_reference_dir_path}", "\'{}\'".format(selection) )
 
 
-print "enter the filename of the new config file(or leave blank to set the config file to SVenX.conf)"
-selection=raw_input()
-if selection == "":
-    selection = "SVenX.conf"
-f= open(selection, "w")
+
+f= open('SVenX.conf', "w")
 f.write(template)
 f.close()
+
+subprocess.call('chmod +x ./SVenX.sh', shell=True)

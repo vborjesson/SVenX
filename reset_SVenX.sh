@@ -1,6 +1,6 @@
 #!/bin/sh
 
-echo 'removing '
+echo 'removing'
 rm SVenX.conf
 rm SVenX.nf
 rm -rf work
