@@ -1,7 +1,7 @@
 
 //------------------------------TIDDIT----------------------------------    
 
-TIDDIT_exec_file = file( "${params.tiddit_path}" )
+TIDDIT_exec_file = file( "${params.TIDDIT_path}" )
 
 process TIDDIT {
     publishDir "${params.working_dir}", mode: 'copy', overwrite: true
@@ -15,11 +15,11 @@ process TIDDIT {
     set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from bam_vcf_wgs
     
     output:
-    set ID, "${bam_file.name}.vcf" into TIDDIT_output
+    set ID, "${ID}_TIDDIT.vcf" into TIDDIT_output
     
     script:
     """
-        ${TIDDIT_exec_file} --sv -b ${bam} -p ${params.TIDDIT_pairs} -q ${params.TIDDIT_q} -o ${bam.name}
+        ${TIDDIT_exec_file} --sv -b ${bam} -p ${params.TIDDIT_pairs} -q ${params.TIDDIT_q} -o ${ID}_TIDDIT
         rm *.tab
     """
     }

@@ -176,7 +176,6 @@ def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sampl
 	
 	subprocess.call('chmod +x ' + str(launch_SVenX_nf), shell = True) 
 
-	# initiate longranger wgs and vep in nextflow
 	if dry_run:
 		print 'Initiating dry run'
 		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type, '--dry_run']

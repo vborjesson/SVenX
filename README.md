@@ -91,7 +91,7 @@ optional arguments:
 -Add plots of SVs?
 -Other cool stuff?   
 ```
-2017-07-21
+2017-07-24
 
 SVenX_01 test run with SVenX.config (no setup.py)
   python ./SVenX_main.py --folder /home/vanja/MasterProject/fastq_data/TenX_folder/ --wgs --dryrun
@@ -105,9 +105,13 @@ SVenX_03 test run with sample
   python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --dryrun
   - works fine!
 
-SVenX_04 rest run sample and VEP
+SVenX_04 test run sample and VEP
   python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --dryrun
-  - status: running on cluster    
+  - status:
+  - Does not work: /pica/h1/vanja/MasterProject/TEST_SVENX/SVenX/work/da/15932cc205831a9c6d51fa4f4c63f3/Sample_P5357_1001_dels_VEP_vcf` is out of the scope of process working dir: /pica/h1/vanja/MasterProject/TEST_SVENX/SVenX/work/7b/c66ba4365aa268b6139179e5d13221 -- Error is ignored   
+
+SVenX_04 test run sample and TIDDIT
+  python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --dryrun
 
 For later:
         Made a new nextflow script that will sort samples in seperate folders and will change _bam and _vcf to .bam and .vcf

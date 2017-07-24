@@ -9,12 +9,12 @@ process VEP_annotation 	{
 	set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from bam_vcf_wgs
 
 	output:
-	file "${ID}_dels_VEP_vcf" into VEP_files 
+	file "${ID}_dels_VEP.vcf" into VEP_files 
 
 	script:
 	"""
 	variant_effect_predictor.pl --cache -i ${dels_vcf} -o ${dels_vcf}_tmp --format vcf --vcf --port 3337 --offline --force_overwrite                    
-	mv ${dels_vcf}_tmp ${ID}_dels_VEP_vcf
+	mv ${dels_vcf}_tmp ${ID}_dels_VEP.vcf
 	"""
 }
 
