@@ -8,10 +8,10 @@ process TIDDIT {
     errorStrategy 'ignore'      
         //tag { bam_file }
     
-        //cpus 1
+        // cpus 1
         
     input:
-        //set ID,  file(bam_file), file(bai_file) from TIDDIT_bam
+
     set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from wgs_outs_TIDDIT
     
     output:

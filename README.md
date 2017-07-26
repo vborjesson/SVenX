@@ -91,7 +91,7 @@ optional arguments:
 -Add plots of SVs?
 -Other cool stuff?   
 ```
-2017-07-24
+2017-07-27
 
 SVenX_01 test run with SVenX.config (no setup.py)
   python ./SVenX_main.py --folder /home/vanja/MasterProject/fastq_data/TenX_folder/ --wgs --dryrun
@@ -117,10 +117,9 @@ SVenX_05 test run sample and CNVnator
   python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --CNVnator --dryrun
   - works fine! 
 
-SVenX_05 test run sample and CNVnator - TIDDIT - VEP 
+SVenX_06 test run sample and CNVnator - TIDDIT - VEP 
   python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator --dryrun
-  - running on UPPMAX
-
+  - works fine!
 
 For later:
 
