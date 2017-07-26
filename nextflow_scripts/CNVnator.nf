@@ -8,7 +8,7 @@ CNVnator_reference_dir=file("${params.CNVnator_reference_dir_path}")
 
 
 process CNVnator {
-        publishDir "${params.working_dir}", mode: 'copy', overwrite: true
+        publishDir "${params.workingDir}", mode: 'copy', overwrite: true
         errorStrategy 'ignore'
         //tag { bam_file }       
 
@@ -16,7 +16,7 @@ process CNVnator {
 
         input:
         //set ID,  file(bam_file), file(bai_file) from CNVnator_bam
-        set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from bam_vcf_wgs
+        set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from wgs_outs_CNVnator
 
         output: 
         set ID, "${bam.name}_CNVnator.vcf" into CNVnator_output

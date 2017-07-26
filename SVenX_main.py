@@ -177,12 +177,12 @@ def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sampl
 	subprocess.call('chmod +x ' + str(launch_SVenX_nf), shell = True) 
 
 	if dry_run:
-		print 'Initiating dry run'
+		print 'Initiating dry run\n'
 		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type, '--dry_run']
 		os.system(" ".join(process))
 
 	else: 
-		print 'launching SVenX in nextflow'
+		print 'launching SVenX in nextflow\n'
 		process = [launch_SVenX_nf, nextflow_path, sample, config, output, sample_type]
 		os.system(" ".join(process))	
 

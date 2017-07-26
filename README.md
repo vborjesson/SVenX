@@ -107,15 +107,31 @@ SVenX_03 test run with sample
 
 SVenX_04 test run sample and VEP
   python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --dryrun
-  - status:
-  - Does not work: /pica/h1/vanja/MasterProject/TEST_SVENX/SVenX/work/da/15932cc205831a9c6d51fa4f4c63f3/Sample_P5357_1001_dels_VEP_vcf` is out of the scope of process working dir: /pica/h1/vanja/MasterProject/TEST_SVENX/SVenX/work/7b/c66ba4365aa268b6139179e5d13221 -- Error is ignored   
+  - works fine!  
 
 SVenX_04 test run sample and TIDDIT
-  python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --dryrun
+  python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --TIDDIT --dryrun
+  - works fine!
+
+SVenX_05 test run sample and CNVnator
+  python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --CNVnator --dryrun
+  - works fine! 
+
+SVenX_05 test run sample and CNVnator - TIDDIT - VEP 
+  python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator --dryrun
+  - running on UPPMAX
+
 
 For later:
-        Made a new nextflow script that will sort samples in seperate folders and will change _bam and _vcf to .bam and .vcf
 
-Next time:
-  continue test runs!
-  put new nf script in end of pipe
+      - Create nf-script using template for SVDB_merge. vcf from (and/or) TIDDIT, CNVnator and longranger wgs. 
+      - Create dependency in python main 'SVDB_merge' if TIDDIT or CNVnator or both to merge wgs vcf. 
+
+      - Create new Vep for SVDB_merge or only longranger wgs. 
+
+      - Create nf_script SVDB_query (vep-input)
+
+      - Pass-script in bash!  
+
+      - As last script in nf-pipe: Create folders of samples
+

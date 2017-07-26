@@ -18,5 +18,5 @@ module load CNVnator
 
 #SVenX main
 #SVenX_04 test run sample and TIDDIT
-python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --CNVnator --dryrun
+python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator --dryrun
 

@@ -4,7 +4,7 @@
 TIDDIT_exec_file = file( "${params.TIDDIT_path}" )
 
 process TIDDIT {
-    publishDir "${params.working_dir}", mode: 'copy', overwrite: true
+    publishDir "${params.workingDir}", mode: 'copy', overwrite: true
     errorStrategy 'ignore'      
         //tag { bam_file }
     
@@ -12,7 +12,7 @@ process TIDDIT {
         
     input:
         //set ID,  file(bam_file), file(bai_file) from TIDDIT_bam
-    set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from bam_vcf_wgs
+    set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from wgs_outs_TIDDIT
     
     output:
     set ID, "${ID}_TIDDIT.vcf" into TIDDIT_output

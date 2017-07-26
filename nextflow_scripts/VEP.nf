@@ -6,10 +6,10 @@ process VEP_annotation 	{
 	errorStrategy 'ignore' 
 
 	input:
-	set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from bam_vcf_wgs
+	set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from wgs_outs_vep
 
 	output:
-	file "${ID}_dels_VEP.vcf" into VEP_files 
+	file "${ID}_dels_VEP.vcf" into VEP_output
 
 	script:
 	"""

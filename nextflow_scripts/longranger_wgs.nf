@@ -39,7 +39,7 @@ if (params.wgs) {
 		set ID, path from tenX_path
 
 		output:
-		set ID, "${ID}.bam", "${ID}_dels.vcf", "${ID}_large_svs.vcf", "${ID}_phased_variants.vcf" into bam_vcf_wgs 
+		set ID, "${ID}.bam", "${ID}_dels.vcf", "${ID}_large_svs.vcf", "${ID}_phased_variants.vcf" into wgs_outs 
 
 		script:
   
@@ -70,3 +70,8 @@ if (params.wgs) {
 	}
 }
 
+wgs_outs.into {
+  wgs_outs_vep
+  wgs_outs_TIDDIT
+  wgs_outs_CNVnator
+}
