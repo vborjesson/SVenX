@@ -1,4 +1,5 @@
 #!/usr/bin/python
+# coding=utf-8
 
 '''
 Main script for TenexPipe
@@ -135,10 +136,10 @@ def check_sample (sample_file):
 				R2 = True
 
 		if not (I1 and R1 and R2):
-			print('\nError: This sample is not complete, please check it and try again.') 	
+			print('Error: This sample is not complete, please check it and try again.') 	
 			sys.exit()
 	else: 
-		print('\nError, this sample have the wrong number of fastq-files, please check that all three I1. R1 and R2 exist and try again.')
+		print('Error, this sample have the wrong number of fastq-files, please check that all three I1. R1 and R2 exist and try again.')
 		sys.exit()
 
 	return(sample_file)
@@ -148,6 +149,40 @@ def check_sample (sample_file):
 
 def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annotation_script, program_list):
 	
+	# If TIDDIT or CNVnator; create a user-specific nextflow-script using a template. This is due to nextflow-specific inputs, outputs from 
+	# different processes needs to be crossed before used as new input in new process. If TIDDIT and/or CNVnator have been executed; we want to 
+	# merge the cnv-files using SVDB merge before continuing.    
+	if ('TIDDIT' in program_list) or ('CNVnator' in program_list):
+		print 'creating SVDB_merge script'
+
+		SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
+		with open(os.path.join(SVenXDirectory,"template/SVDB_merge_template.nf"), 'r') as myfile:
+			template=myfile.read()
+
+		if ('TIDDIT' in program_list) and ('CNVnator' in program_list):
+			template= template.replace("©©©©©", "wgs_outs_SVDB.cross(TIDDIT_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}") 	
+			template= template.replace("@@@@@", "combined_first.cross(CNVnator_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[0][5],it[1][1]]}")
+			template= template.replace("¤¤¤¤¤", "bam, dels_vcf, large_svs_vcf, phased_variants_vcf, TIDDIT_vcf, CNVnator_vcf")
+			template= template.replace("£££££", "${large_svs_vcf} ${TIDDIT_vcf} ${CNVnator_vcf}")
+
+		elif ('TIDDIT' in program_list):
+			template= template.replace("©©©©©", "not_in_use")
+			template= template.replace("@@@@@", "wgs_outs_SVDB.cross(TIDDIT_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}")
+			template= template.replace("¤¤¤¤¤", "bam, dels_vcf, large_svs_vcf, phased_variants_vcf, TIDDIT_vcf")
+			template= template.replace("£££££", "${large_svs_vcf} ${TIDDIT_vcf}")
+
+		elif ('CNVnator' in program_list):
+			template= template.replace("©©©©©", "not_in_use")
+			template= template.replace("@@@@@", "wgs_outs_SVDB.cross(CNVnator_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}")
+			template= template.replace("¤¤¤¤¤", "bam, dels_vcf, large_svs_vcf, phased_variants_vcf, CNVnator_vcf")
+			template= template.replace("£££££", "${large_svs_vcf} ${CNVnator_vcf}")
+
+		f= open('SVDB_merge.nf', "w")
+		f.write(template)
+		f.close()
+    	
+    	print 'SVDB merge script created'	
+
 	print 'Creating nextflow script'
 	with open('SVenX.nf', 'w') as outfile:
 		
@@ -163,6 +198,9 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 		if ('CNVnator' in program_list):
 			subprocess.call('cat '+ str(CNVnator_script), shell=True, stdout=outfile)
 			print 'CNVnator was added to the SVenX script'
+		if ('TIDDIT' in program_list) or ('CNVnator' in program_list):
+			subprocess.call('cat SVDB_merge.nf', shell=True, stdout=outfile)
+			print 'SVDB_merge was added to SVenX script'	
 		if ('annotation' in program_list):
 			subprocess.call('cat '+ str(annotation_script), shell=True, stdout=outfile)
 			print 'Annotation programs was added to the SVenX script'

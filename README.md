@@ -22,6 +22,9 @@ If CNVnator:
   If you are using UPPMAX, only load the module in your launching bash script. See SVenX.sh. And setup a reference directory.
   If you are not working on UPPMAX, please install the CNVnator from https://github.com/abyzovlab/CNVnatorat.
 
+If TIDDIT or CNVnator:
+  You will need to merge the output vcf-files using SVDB. Installation is partly done using setup.py, but also requires sciKit-learn v0.15.2 as well as numpy.  
+
 Choose programs below that you would like to include in the SVenX-pipe
 
 Longranger wgs 

@@ -6,19 +6,19 @@ import sys
 answer = False
 
 print '\n###################################################################################'
-print '\n             SVenX setup'
+print '\n                       SVenX setup'
 print '\n###################################################################################'
 print ('\nFollow the instructions in this setup script and answer the questions when needed.')
 
 # GENERAL
 
 # Nextflow
-print ('\nParts of SVenX is written in Nextflow, in order to run it nextflow needs to be installed.')
+print ('Parts of SVenX is written in Nextflow, in order to run it nextflow needs to be installed.')
 print 'Is nextflow installed? yes/no'
 while answer is False:
     selection=raw_input()
     if selection == 'NO' or selection == 'no':
-        print('\nPlease install nextflow and then run setup.py once again')
+        print('Please install nextflow and then run setup.py once again')
         sys.exit()  
     if selection == 'YES' or selection == 'yes':
         answer = True  
@@ -40,13 +40,13 @@ while answer is False:
         print 'Invalid syntax, please enter yes or no'       
 
 if not uppmax:
-    print '\nLongranger needs to be installed before running SVenX. Information about how to install it can be found at https://support.10xgenomics.com.'
+    print 'Longranger needs to be installed before running SVenX. Information about how to install it can be found at https://support.10xgenomics.com.'
     print 'Is longranger installed? yes/no'
     answer = False
     while answer is False:
         selection=raw_input()
         if selection == 'NO' or selection == 'no':
-            print('\nPlease install Longranger and then run setup.py once again')
+            print('Please install Longranger and then run setup.py once again')
             sys.exit()  
         if selection == 'YES' or selection == 'yes':
             answer = True  
@@ -58,13 +58,10 @@ SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
 with open(os.path.join(SVenXDirectory,"template/SVenX_template.config"), 'r') as myfile:
     template=myfile.read()
 
-print '\nGeneral information needed in order to run Longranger.' 
-print 'This is my current working dir', SVenXDirectory
-
-print '\nGeneral information needed in order to run Longranger.' 
+print 'General information needed in order to run Longranger.' 
 
 
-print "\nEnter standard output directory, the path is set to SVenX_outs if left empty"
+print "Enter standard output directory, the path is set to SVenX_outs if left empty"
 selection=raw_input()
 if selection == "":
     selection = os.path.join(SVenXDirectory,"SVenX_outs")
@@ -83,8 +80,8 @@ if selection == "yes" or selection == "YES":
     if uppmax:
         answer = True
     if not uppmax:
-        print '\nIn order to run VEP it has to be installed. Information about how to install it can be found at VEP ENSMBLE website.'
-        print '\nIs VEP installed? yes/no'        
+        print 'In order to run VEP it has to be installed. Information about how to install it can be found at VEP ENSMBLE website.'
+        print 'Is VEP installed? yes/no'        
         while answer is False:
             selection=raw_input()
             if selection == 'NO' or selection == 'no':
@@ -97,19 +94,28 @@ if selection == "yes" or selection == "YES":
 
 
 # TIDDIT
-
-print "\nTIDDIT needs to be installed in order to run it. If you have already installed TIDDIT, please answer no."
-print "Do you want to install TIDDIT? yes/no"
+print "Do you want to run TIDDIT? yes/no"
 selection = raw_input()
-if selection == 'yes' or selection == 'YES':
-    print "installing and setting up TIDDIT"
-    subprocess.call('chmod +x install_TIDDIT.sh', shell=True)
-    command=["{} {}".format(os.path.join(SVenXDirectory,"install_TIDDIT.sh"),SVenXDirectory)]
-    tmp=subprocess.check_output(command,shell = True)
-    template=template.replace("{TIDDIT_path}", "\'{}\'".format(os.path.join(SVenXDirectory,"TIDDIT/bin/TIDDIT")) )
+if selection == "yes" or selection == "YES": 
+    print "TIDDIT needs to be installed in order to run it. If you have already installed TIDDIT, please answer no."
+    print "Do you want to install TIDDIT? yes/no"
+    selection = raw_input()
+    if selection == 'yes' or selection == 'YES':
+        print "installing and setting up TIDDIT"
+        subprocess.call('chmod +x installation_scripts/install_TIDDIT.sh', shell=True)
+        command=["{} {}".format(os.path.join(SVenXDirectory,"installation_scripts/install_TIDDIT.sh"),SVenXDirectory)]
+        tmp=subprocess.check_output(command,shell = True)
+        template=template.replace("{TIDDIT_path}", "\'{}\'".format(os.path.join(SVenXDirectory,"TIDDIT/bin/TIDDIT")) )
+
+    if selection == 'no' or selection == 'NO':
+        print 'Add path to TIDDIT. The path is set to current working directory TIDDIT/bin/TIDDIT/ if left blank'
+        selection = raw_input()
+        if selection == "":
+            selection = os.path.join(SVenXDirectory,"TIDDIT/bin/TIDDIT")
+        template=template.replace("{TIDDIT_path}", "\'{}\'".format(selection))
 
 # SV - CNVnator
-print "\nDo you want to run CNVnator? yes/no"
+print "Do you want to run CNVnator? yes/no"
 selection = raw_input()
 if selection == "yes" or selection == "YES": 
     answer = False
@@ -121,7 +127,7 @@ if selection == "yes" or selection == "YES":
         while answer is False:
             selection=raw_input()
             if selection == 'NO' or selection == 'no':
-                print('\nPlease install CNVnator and then run setup.py once again')
+                print('Please install CNVnator and then run setup.py once again')
                 sys.exit()  
             if selection == 'YES' or selection == 'yes':
                 answer = True  
@@ -151,7 +157,20 @@ if selection == "yes" or selection == "YES":
         selection=raw_input()
         template=template.replace("{CNVnator_reference_dir_path}", "\'{}\'".format(selection) )
 
-
+print "If you are going to run TIDDIT or CNVnator, the vcf-files generated needs to be merged. In order to do so, SVDB needs to be installed. If you have already installed SVDB please answer no"
+print "Do you want to install SVDB? yes/no"
+selection = raw_input()
+if selection == 'yes' or selection == 'YES':
+    print "SVDB requires sciKit-learn v0.15.2 as well as numpy, if these have not been installed yet, please answer no and do so before starting over again"
+    selection = raw_input()
+    if selection  == 'no' or selection == 'NO':
+        print('\nPlease make sure sciKit-learn v0.15.2 and numpy is installed and then run setup.py once again')
+        sys.exit()  
+    print "installing and setting up SVDB"
+    subprocess.call('chmod +x installation_scripts/install_SVDB.sh', shell=True)
+    command=["{} {}".format(os.path.join(SVenXDirectory,"installation_scripts/install_SVDB.sh"),SVenXDirectory)]
+    tmp=subprocess.check_output(command,shell = True)
+    template=template.replace("{SVDB_script_path}", "\'{}\'".format(os.path.join(SVenXDirectory,"SVDB/SVDB.py")) )
 
 f= open('SVenX.conf', "w")
 f.write(template)
