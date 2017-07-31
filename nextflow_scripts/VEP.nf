@@ -1,7 +1,6 @@
 
 
-
-process VEP_annotation 	{
+process VEP_annotation {
 	publishDir params.workingDir, mode: "copy", overwrite: true
 	errorStrategy 'ignore' 
 
@@ -17,4 +16,3 @@ process VEP_annotation 	{
 	mv ${dels_vcf}_tmp ${ID}_dels_VEP.vcf
 	"""
 }
-

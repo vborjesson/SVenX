@@ -39,7 +39,7 @@ if (params.wgs) {
 		set ID, path from tenX_path
 
 		output:
-		set ID, "${ID}.bam", "${ID}_dels.vcf", "${ID}_large_svs.vcf", "${ID}_phased_variants.vcf" into wgs_outs 
+		set ID, "${ID}.bam", "${ID}_dels.vcf.gz", "${ID}_large_svs.vcf", "${ID}_phased_variants.vcf.gz" into wgs_outs 
 
 		script:
   
@@ -49,21 +49,20 @@ if (params.wgs) {
 			longranger wgs --id=${ID} --reference=${params.ref} --fastqs=$path  
 			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf
 			mv ${ID}/outs/phased_possorted_bam.bam ./${ID}.bam
-			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf
-			mv ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs.vcf
-			mv ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants.vcf	
+			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf.gz
+			mv ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs.vcf.gz
+			mv ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants.vcf.gz	
 		"""
 	
 		}else{
 
 		"""
-			echo ${ID}
 			ln -s ${params.wgs_result} ${ID} 
 			cp ${ID}/outs/phased_possorted_bam.bam ./${ID}.bam
-			cp ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf
-			cp ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs.vcf
-			cp ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants.vcf
-			echo ${ID}
+			cp ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf.gz
+			cp ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs.vcf.gz
+			gunzip ./${ID}_large_svs.vcf.gz
+			cp ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants.vcf.gz
 		"""
 
 		}

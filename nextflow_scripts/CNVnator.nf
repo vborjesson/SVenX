@@ -27,8 +27,8 @@ process CNVnator {
         ${CNVnator_exec_file} -root cnvnator.root -his ${params.CNVnator_bin_size} -d ${CNVnator_reference_dir}
         ${CNVnator_exec_file} -root cnvnator.root -stat ${params.CNVnator_bin_size} >> cnvnator.log
         ${CNVnator_exec_file} -root cnvnator.root -partition ${params.CNVnator_bin_size}
-        ${CNVnator_exec_file} -root cnvnator.root -call ${params.CNVnator_bin_size} > ${ID}_CNVnator.out
-        ${CNVnator2vcf} ${ID}_CNVnator.out >  ${ID}_CNVnator.vcf
+        ${CNVnator_exec_file} -root cnvnator.root -call ${params.CNVnator_bin_size} > ${bam.name}_CNVnator.out
+        ${CNVnator2vcf} ${bam.name}_CNVnator.out >  ${bam.name}_CNVnator.vcf
         rm cnvnator.root
         """
     }

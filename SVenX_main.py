@@ -149,7 +149,7 @@ def check_sample (sample_file):
 
 def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annotation_script, program_list):
 	
-	# If TIDDIT or CNVnator; create a user-specific nextflow-script using a template. This is due to nextflow-specific inputs, outputs from 
+	# If TIDDIT or CNVnator; create a user-specific SVDB nextflow-script using a template. This is due to nextflow-specific inputs, outputs from 
 	# different processes needs to be crossed before used as new input in new process. If TIDDIT and/or CNVnator have been executed; we want to 
 	# merge the cnv-files using SVDB merge before continuing.    
 	if ('TIDDIT' in program_list) or ('CNVnator' in program_list):
@@ -180,10 +180,42 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 		f= open('SVDB_merge.nf', "w")
 		f.write(template)
 		f.close()
-    	
-    	print 'SVDB merge script created'	
 
-	print 'Creating nextflow script'
+		print 'SVDB merge script created'	
+		
+		print 'Creating VEP and SVDB query script specific for SVDB merge output files'
+
+		SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
+		with open(os.path.join(SVenXDirectory,"template/vep_svdb_template.nf"), 'r') as myfile:
+			my_files=myfile.read()
+
+		my_files= my_files.replace("¤¤¤¤", "set ID, merged_callers from SVDB_merge_outout")
+		my_files= my_files.replace("&&&&", "${merged_callers}")		
+
+		f= open('VEP_SVDB.nf', "w")
+		f.write(my_files)
+		f.close()			
+
+		print 'VEP_SVDB.nf script created'
+
+
+	else: 	
+		print 'creating vep and SVDB query script for longranger wgs large_svs.vcf'
+
+		SVenXDirectory = os.path.dirname(os.path.abspath(__file__))
+		with open(os.path.join(SVenXDirectory,"template/vep_svdb_template.nf"), 'r') as myfile:
+			my_files=myfile.read()
+
+		my_files= my_files.replace("¤¤¤¤", "set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from wgs_outs_vep")
+		my_files= my_files.replace("&&&&", "${large_svs_vcf}")		
+
+		f= open('VEP_SVDB.nf', "w")
+		f.write(my_files)
+		f.close()		
+
+		print 'VEP_SVDB.nf script created'
+
+	print 'Creating SVenX main nextflow script'
 	with open('SVenX.nf', 'w') as outfile:
 		
 		if ('wgs' in program_list):
@@ -191,7 +223,7 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 			print 'Longranger wgs was added to the SVenX script'
 		if ('vep' in program_list):
 			subprocess.call('cat '+ str(vep_script), shell=True, stdout=outfile)
-			print 'VEP was added to the SVenX script'
+			print 'VEP was added to the SVenX script'	
 		if ('TIDDIT' in program_list):
 			subprocess.call('cat '+ str(TIDDIT_script), shell=True, stdout=outfile)
 			print 'TIDDIT was added to the SVenX script'
@@ -200,7 +232,10 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 			print 'CNVnator was added to the SVenX script'
 		if ('TIDDIT' in program_list) or ('CNVnator' in program_list):
 			subprocess.call('cat SVDB_merge.nf', shell=True, stdout=outfile)
-			print 'SVDB_merge was added to SVenX script'	
+			print 'SVDB_merge was added to SVenX script'
+			subprocess.call('cat VEP_SVDB.nf', shell=True, stdout=outfile)
+			print 'vep and SVDB query was added to SVenX script'
+
 		if ('annotation' in program_list):
 			subprocess.call('cat '+ str(annotation_script), shell=True, stdout=outfile)
 			print 'Annotation programs was added to the SVenX script'
