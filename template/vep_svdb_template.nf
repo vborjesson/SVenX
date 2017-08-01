@@ -16,3 +16,18 @@ process VEP {
 	mv ${ID}_tmp ${ID}_VEP.vcf
 	"""
 }
+
+process svdb_query {
+	publishDir params.workingDir, mode: "copy", overwrite: true
+	errorStrategy 'ignore' 
+
+	input:
+	set ID, vep_vcf from VEP_out
+
+	output:
+	set ID, 
+
+	script:
+	svdb --query --query_vcf ${vep_vcf} --db ${params.svdb_database} > ${ID}_SVDB_query.vcf
+	cat ${ID}_SVDB_query.vcf | grepp PASS > ${ID}_filtered.vcf
+}

@@ -100,14 +100,12 @@ SVenX_07 test run with SVDB merge.
   python ./SVenX_main.py --sample /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator --dryrun
   -Works fine! generates a merge_callers.vcf in SVenX_outs
 
-For later:
+SVenX_08 test run with SVDB merge + vep_svdb (just vep) script
+  -works fine  
 
-      - Create nf-script using template for SVDB_merge. vcf from (and/or) TIDDIT, CNVnator and longranger wgs. 
-      - Create dependency in python main 'SVDB_merge' if TIDDIT or CNVnator or both to merge wgs vcf. 
+For later: 
 
-      - Create new Vep for SVDB_merge or only longranger wgs. 
-
-      - Create nf_script SVDB_query (vep-input)
+      - Create nf_script SVDB_query (vep-input) add to vep_svdb_template.
 
       - Pass-script in bash!  
 

@@ -172,6 +172,11 @@ if selection == 'yes' or selection == 'YES':
     tmp=subprocess.check_output(command,shell = True)
     template=template.replace("{SVDB_script_path}", "\'{}\'".format(os.path.join(SVenXDirectory,"SVDB/SVDB.py")) )
 
+
+print  "In order to run SVDB query, please add the path to query database. See https://github.com/J35P312/SVDB for more information"
+selection=raw_input()
+template=template.replace("{SVDB_database}", "\'{}\'".format(selection) )
+
 f= open('SVenX.conf', "w")
 f.write(template)
 f.close()
