@@ -74,4 +74,5 @@ wgs_outs.into {
   wgs_outs_TIDDIT
   wgs_outs_CNVnator
   wgs_outs_SVDB 
+  wgs_outs_make_folders
 }

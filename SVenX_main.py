@@ -36,7 +36,6 @@ parser.add_argument('--CNVnator_script', dest='CNVnator_script_nf', default= 'ne
 parser.add_argument('--annotation_script', dest='annotation_script_nf', default= 'nextflow_scripts/annotation.nf', help='Path to annotation nextflow script', required= False)
 parser.add_argument('--launch_SVenX_nf', dest='launch_SVenX_nf', default= './launch_SVenX.sh', help='Path to SVenX nextflow launching script; launch_SVenX.sh, is set to ./launch_SVenX.sh', required= False)
 
-
 args = parser.parse_args()
 
 tenX_folder = args.tenX_folder
@@ -239,7 +238,7 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 		if ('annotation' in program_list):
 			subprocess.call('cat '+ str(annotation_script), shell=True, stdout=outfile)
 			print 'Annotation programs was added to the SVenX script'
-
+			
 		print 'Script completed\n'
 
 

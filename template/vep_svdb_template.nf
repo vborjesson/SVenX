@@ -25,9 +25,13 @@ process svdb_query {
 	set ID, vep_vcf from VEP_out
 
 	output:
-	set ID, 
+	set ID, "${ID}_filtered.vcf" into filtered_vcf
 
 	script:
+	"""
 	svdb --query --query_vcf ${vep_vcf} --db ${params.svdb_database} > ${ID}_SVDB_query.vcf
-	cat ${ID}_SVDB_query.vcf | grepp PASS > ${ID}_filtered.vcf
+	cat ${ID}_SVDB_query.vcf | grep PASS > ${ID}_filtered.vcf
+	"""
 }
+
+
