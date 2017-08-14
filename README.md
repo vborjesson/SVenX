@@ -81,5 +81,5 @@ python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P5357_1
 
 For later: 
 
-      - As last script in nf-pipe: Create folders of samples
+      - As last script in nf-pipe: Create folders of samples 
 
