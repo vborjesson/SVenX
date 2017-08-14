@@ -162,6 +162,7 @@ print "Do you want to install SVDB? yes/no"
 selection = raw_input()
 if selection == 'yes' or selection == 'YES':
     print "SVDB requires sciKit-learn v0.15.2 as well as numpy, if these have not been installed yet, please answer no and do so before starting over again"
+    print "Have sciKit-learn v0.15.2 and numpy correctly been installed?"
     selection = raw_input()
     if selection  == 'no' or selection == 'NO':
         print('\nPlease make sure sciKit-learn v0.15.2 and numpy is installed and then run setup.py once again')

@@ -29,12 +29,23 @@ parser.add_argument('--basic', dest='l_basic', help= 'Add if you want to run lon
 
 parser.add_argument('--output', dest='output', default='./SVenX_outs', help='workingDir, is set to SVenX_outs as a default', required= False)
 parser.add_argument('--nextflow', dest='nf', default= '~/nextflow', help='path to program nextflow, is set to ~/nextflow as default', required= False)
+
+'''
 parser.add_argument('--wgs_script', dest='wgs_script_nf', default= 'nextflow_scripts/longranger_wgs.nf', help='Path to longranger wgs nextflow script, is set to script', required= False)
 parser.add_argument('--vep_script', dest='vep_script_nf', default= 'nextflow_scripts/VEP.nf', help='Path to VEP nextflow script', required= False)
 parser.add_argument('--TIDDIT_script', dest='TIDDIT_script_nf', default= 'nextflow_scripts/TIDDIT.nf', help='Path to TIDDIT nextflow script', required= False)
 parser.add_argument('--CNVnator_script', dest='CNVnator_script_nf', default= 'nextflow_scripts/CNVnator.nf', help='Path to CNVnator nextflow script', required= False)
 parser.add_argument('--annotation_script', dest='annotation_script_nf', default= 'nextflow_scripts/annotation.nf', help='Path to annotation nextflow script', required= False)
 parser.add_argument('--launch_SVenX_nf', dest='launch_SVenX_nf', default= './launch_SVenX.sh', help='Path to SVenX nextflow launching script; launch_SVenX.sh, is set to ./launch_SVenX.sh', required= False)
+'''
+
+# Path to all nextflow scripts
+wgs_script_nf= 'nextflow_scripts/longranger_wgs.nf'
+vep_script_nf= 'nextflow_scripts/VEP.nf'
+TIDDIT_script_nf='nextflow_scripts/TIDDIT.nf'
+CNVnator_script_nf='nextflow_scripts/CNVnator.nf'
+annotation_script_nf = 'nextflow_scripts/annotation.nf'
+launch_SVenX_nf='./launch_SVenX.sh'
 
 args = parser.parse_args()
 
@@ -244,6 +255,7 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 
 #################################### FUNCTION LAUNCHING SVENX.NF #############################################################
 
+# This function will launch the SVenX script with the user specific programs 
 def launch_script (launch_SVenX_nf, nextflow_path, sample, config, output, sample_type):
 	
 	subprocess.call('chmod +x ' + str(launch_SVenX_nf), shell = True) 
@@ -273,7 +285,17 @@ print('-------------------------------------------------------------------------
 
 # If no sample added: message	
 if not (tenX_folder or tenX_sample):
-	print 'No 10X sample was added, please add a 10X sample or folder of samples as an argument and try again'
+	print 'No 10X sample was added, please add a 10X sample or folder of samples as an argument and try again\n'
+	sys.exit()
+
+# If no programs was added as argument
+if len(program_list) == 0:
+	print 'No programs was selected. If you want to run any programs, please add program as argument when running SVenX. Please use SVenX_main.py -h for further information and options\n'
+	sys.exit()		
+
+if 'wgs' not in program_list:
+	print 'In order to run the program you want, --wgs needs to be added as an argument to generate bam and vcf-files\n'	
+	sys.exit()
 
 # If a folder of folders with 10x data - this will initiate a function that checks that all folders and files are added correctly. 
 if tenX_folder:
@@ -292,10 +314,6 @@ if tenX_sample:
 # Create a nextflow script with all selected programs
 # Launch SVenX in nextflow
 if program_list != '':
-	make_script = create_script(args.wgs_script_nf, args.vep_script_nf, args.TIDDIT_script_nf, args.CNVnator_script_nf, args.annotation_script_nf, program_list) 			
-	execute = launch_script(args.launch_SVenX_nf, args.nf, folder_complete, args.config, args.output, tenX_type)
-
-# If no programs was selected, message:
-if program_list == '':
-	print 'No programs was selected. If you want to run any programs, please add program as argument when running SVenX. Please use SVenX_main.py -h for further information and options'
+	make_script = create_script(wgs_script_nf, vep_script_nf, TIDDIT_script_nf, CNVnator_script_nf, annotation_script_nf, program_list) 			
+	execute = launch_script(launch_SVenX_nf, args.nf, folder_complete, args.config, args.output, tenX_type)
 
