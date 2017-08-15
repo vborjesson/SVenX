@@ -1,4 +1,5 @@
 
+//----------------------VEP - SVDB query ------------------------------
 
 process VEP {
 	publishDir params.workingDir, mode: "copy", overwrite: true

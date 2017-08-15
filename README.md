@@ -5,9 +5,10 @@ Pipeline that uses 10x genomics fastq-data to find Structural variants, SVs.
 ---
 SVenX is a program that takes in fastq-files (single samples or folder of several samples) generated from 10x-genomics, the sample-folders will be checked if they contain all necessary files and execute user selected programs such as; Longranger WGS, VEP, TIDDIT, CNVnator, SVDB and filtering steps.
 
-***
+
 
 ### Environmental setup 
+---
 
 In order to run this program you will need to set up an environment. 
 

@@ -1,4 +1,5 @@
 
+// ------------------VEP - annotation ----------------------------
 
 process VEP_annotation {
 	publishDir params.workingDir, mode: "copy", overwrite: true
