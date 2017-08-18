@@ -80,6 +80,11 @@ An example:
 python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator
 ```
 
+2017-08-18
+Test with tiny-data X 3. running 
+python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
+
+
 For later: 
 
       - As last script in nf-pipe: Create folders of samples 
