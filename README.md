@@ -81,9 +81,9 @@ python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P5357_1
 ```
 
 2017-08-18
-Test with tiny-data X 3. running 
+Test with tiny-data X 3 with soft links. running: 
 python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
-
+48 h 1 core 
 
 For later: 
 
