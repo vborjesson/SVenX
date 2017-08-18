@@ -78,6 +78,7 @@ selection = raw_input()
 if selection == "yes" or selection == "YES": 
     answer = False
     if uppmax:
+        print 'The module will be loaded on UPPMAX'
         answer = True
     if not uppmax:
         print 'In order to run VEP it has to be installed. Information about how to install it can be found at VEP ENSMBLE website.'
@@ -120,6 +121,7 @@ selection = raw_input()
 if selection == "yes" or selection == "YES": 
     answer = False
     if uppmax:
+        print 'The module will be loaded on UPPMAX'
         answer = True
     if not uppmax:
         print 'In order to run CNVnator it has to be installed. Information about how to install it can be found at https://github.com/abyzovlab/CNVnatorat .'
