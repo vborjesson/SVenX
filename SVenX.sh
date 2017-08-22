@@ -14,7 +14,7 @@ module load vep/87
 module load CNVnator
 
 #SVenX main
-cp * $TMPDIR 
+cp -r * $TMPDIR 
 cd $TMPDIR
 python ./SVenX_main.py --folder /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator
 cp $TMPDIR/SVenX_outs $SLURM_SUBMIT_DIR 
