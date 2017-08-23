@@ -84,8 +84,19 @@ python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P5357_1
 Test with tiny-data X 3 with soft links. running: 
 python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
 48 h 1 core 
+- did not work! Out of memory. 
 
-For later: 
+2017-08-21
+Test with tiny-data X 2 with soft links. running: 
+python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
+120 h 2 core 
+- did not work! Out of memory again.
 
-      - As last script in nf-pipe: Create folders of samples 
+2017-08-22
+Test with tiny-data X 2 with soft links. running: 
+python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
+120 h 1 core and maxforks in process longranger wgs = 1
+- still running. 
+
+Added sorting to end of main-script 
 

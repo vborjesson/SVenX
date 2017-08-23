@@ -60,11 +60,7 @@ with open(os.path.join(SVenXDirectory,"template/SVenX_template.config"), 'r') as
 
 print 'General information needed in order to run Longranger.' 
 
-
-print "Enter standard output directory, the path is set to SVenX_outs if left empty"
-selection=raw_input()
-if selection == "":
-    selection = os.path.join(SVenXDirectory,"SVenX_outs")
+# Output_directory
 template=template.replace("{working_dir}", "\'{}\'".format(selection) )
 
 print "Set the path to the reference genome hg 19"
@@ -184,4 +180,7 @@ f= open('SVenX.conf', "w")
 f.write(template)
 f.close()
 
+# Make the launching-script executable 
 subprocess.call('chmod +x ./SVenX.sh', shell=True)
+
+print 'Setup is completed'
