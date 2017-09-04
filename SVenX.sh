@@ -1,6 +1,6 @@
 #!/bin/bash -l
 
-#SBATCH -A b2014152
+#SBATCH -A b2016296
 #SBATCH -p core
 #SBATCH -n 16
 #SBATCH -t 48:00:00
@@ -14,7 +14,7 @@ module load vep/87
 module load CNVnator
 
 #SVenX main
-cp -r * $TMPDIR 
-cd $TMPDIR
-python ./SVenX_main.py --folder /home/vanja/MasterProject/fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator
-cp $TMPDIR/SVenX_outs $SLURM_SUBMIT_DIR 
+#cp -r * $TMPDIR 
+#cd $TMPDIR
+python ./SVenX_main.py --folder /proj/b2016296/private/vanja/test_data --wgs --vep --TIDDIT --CNVnator
+#cp $TMPDIR/SVenX_outs $SLURM_SUBMIT_DIR 
