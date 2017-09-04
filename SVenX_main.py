@@ -27,7 +27,7 @@ parser.add_argument('--CNVnator', dest= 'CNVnator', help= 'Add if you want to ru
 parser.add_argument('--annotation', dest = 'annotation', help= 'Add if you want to run annotations', action= 'store_true')
 parser.add_argument('--basic', dest='l_basic', help= 'Add if you want to run longranger basic', action='store_true', required= False)
 
-parser.add_argument('--output', dest='output', default='./SVenX_outs', help='workingDir, is set to SVenX_outs as a default', required= False)
+parser.add_argument('--output', dest='output', default='SVenX_outs', help='workingDir, is set to SVenX_outs as a default', required= False)
 parser.add_argument('--nextflow', dest='nf', default= '~/nextflow', help='path to program nextflow, is set to ~/nextflow as default', required= False)
 
 '''
