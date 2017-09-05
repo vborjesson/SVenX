@@ -61,7 +61,7 @@ with open(os.path.join(SVenXDirectory,"template/SVenX_template.config"), 'r') as
 print 'General information needed in order to run Longranger.' 
 
 # Output_directory
-template=template.replace("{working_dir}", "\'{}\'".format(selection) )
+#template=template.replace("{working_dir}", "\'{}\'".format(selection) )
 
 print "Set the path to the reference genome hg 19"
 selection=raw_input()
