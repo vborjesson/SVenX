@@ -44,11 +44,11 @@ if (params.wgs) {
   		if (!params.dry_run){
 
 		"""
-			longranger wgs --id=${ID} --reference=${params.ref} --fastqs=$path  
-			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf
+			longranger wgs --id=${ID} --reference=${params.ref} --fastqs=${path}  
 			mv ${ID}/outs/phased_possorted_bam.bam ./${ID}.bam
 			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf.gz
 			mv ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs.vcf.gz
+			gunzip ./${ID}_large_svs.vcf.gz
 			mv ${ID}/outs/phased_variants.vcf.gz ./${ID}_phased_variants.vcf.gz	
 		"""
 	
