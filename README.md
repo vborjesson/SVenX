@@ -80,23 +80,13 @@ An example:
 python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator
 ```
 
-2017-08-18
-Test with tiny-data X 3 with soft links. running: 
-python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
-48 h 1 core 
-- did not work! Out of memory. 
+2017-09-14
+  A cuple of days ago, SVenX executed perfectly! The only error was vep, due to emty dels_vcf (no dels found in test_data). This would normally never happen on 
+  real genomic data and will therefoir be ignored. On a couple of days I wil try run SVenX on real 10X data.
 
-2017-08-21
-Test with tiny-data X 2 with soft links. running: 
-python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
-120 h 2 core 
-- did not work! Out of memory again.
+  GlenX needs tab files; change this output in TIDDIT script!
+  
 
-2017-08-22
-Test with tiny-data X 2 with soft links. running: 
-python ./SVenX_main.py --folder /tiny/data/path/ --wgs --vep --TIDDIT --CNVnator
-120 h 1 core and maxforks in process longranger wgs = 1
-- still running. 
 
-Added sorting to end of main-script 
+
 
