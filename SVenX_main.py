@@ -329,5 +329,6 @@ if program_list != '':
 	execute = launch_script(launch_SVenX_nf, args.nf, folder_complete, args.config, args.output, tenX_type)
 
 # Sort the SVenX-folder containing output-files according to sample-name. 
-#sort = sorting(folder_list, args.output)
+sort = sorting(folder_list, args.output)
+
 print 'SvenX have been successfully completed.' 

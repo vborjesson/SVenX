@@ -31,7 +31,7 @@ process svdb_query {
 	script:
 	"""
 	svdb --query --query_vcf ${vep_vcf} --db ${params.svdb_database} > ${ID}_SVDB_query.vcf
-	cat ${ID}_SVDB_query.vcf | egrep 'PASS|#' > ${ID}_filterezd.vcf
+	cat ${ID}_SVDB_query.vcf | egrep 'PASS|#' > ${ID}_filtered.vcf
 	"""
 }
 
