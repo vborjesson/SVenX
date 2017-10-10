@@ -171,14 +171,14 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 			template=myfile.read()
 
 		if ('TIDDIT' in program_list) and ('CNVnator' in program_list):
-			template= template.replace("©©©©©", "wgs_outs_SVDB.cross(TIDDIT_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}") 	
+			template= template.replace("©©©©©", "wgs_outs_SVDB.cross(TIDDIT_output_svdbmerge).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}") 	
 			template= template.replace("@@@@@", "combined_first.cross(CNVnator_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[0][5],it[1][1]]}")
 			template= template.replace("¤¤¤¤¤", "bam, dels_vcf, large_svs_vcf, phased_variants_vcf, TIDDIT_vcf, CNVnator_vcf")
 			template= template.replace("£££££", "${large_svs_vcf} ${TIDDIT_vcf} ${CNVnator_vcf}")
 
 		elif ('TIDDIT' in program_list):
 			template= template.replace("©©©©©", "not_in_use")
-			template= template.replace("@@@@@", "wgs_outs_SVDB.cross(TIDDIT_output).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}")
+			template= template.replace("@@@@@", "wgs_outs_SVDB.cross(TIDDIT_output_svdbmerge).map{it ->  [it[0][0],it[0][1],it[0][2],it[0][3],it[0][4],it[1][1]]}")
 			template= template.replace("¤¤¤¤¤", "bam, dels_vcf, large_svs_vcf, phased_variants_vcf, TIDDIT_vcf")
 			template= template.replace("£££££", "${large_svs_vcf} ${TIDDIT_vcf}")
 
