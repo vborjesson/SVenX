@@ -32,7 +32,9 @@ if (params.wgs) {
 	process longRanger_wgs  {
 		publishDir params.workingDir, mode: "copy", overwrite: true
 		errorStrategy 'ignore' 
-
+		cpus 16
+		scratch true
+		
 		input:
 		set ID, path from tenX_path
 
@@ -44,7 +46,7 @@ if (params.wgs) {
   		if (!params.dry_run){
 
 		"""
-			longranger wgs --id ${ID} --reference ${params.ref} --fastqs ${path}  
+			longranger wgs --id ${ID} --reference ${params.ref} --localcores=16 --fastqs ${path}  
 			mv ${ID}/outs/phased_possorted_bam.bam ./${ID}.bam
 			mv ${ID}/outs/dels.vcf.gz ./${ID}_dels.vcf.gz
 			mv ${ID}/outs/large_svs.vcf.gz ./${ID}_large_svs.vcf.gz
