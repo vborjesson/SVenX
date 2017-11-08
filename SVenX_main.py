@@ -210,6 +210,7 @@ def create_script (wgs_script, vep_script, TIDDIT_script, CNVnator_script, annot
 		print 'VEP_SVDB.nf script created'
 
 
+	# If TIDDIT and/or CNVnator was not selected, create script for only vep and SVDB 
 	else: 	
 		print 'creating vep and SVDB query script for longranger wgs large_svs.vcf'
 
