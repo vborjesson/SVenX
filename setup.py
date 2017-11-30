@@ -5,9 +5,9 @@ import sys
 
 answer = False
 
-print '\n###################################################################################'
+print '\n##############################################################'
 print '\n                       SVenX setup'
-print '\n###################################################################################'
+print '\n##############################################################'
 print ('\nFollow the instructions in this setup script and answer the questions when needed.')
 
 # GENERAL
@@ -152,7 +152,7 @@ if selection == "yes" or selection == "YES":
         template=template.replace("{thisroot_path}", "\'{}\'".format(selection) )
         thisroot=selection
 
-        print "add the path of the directory containing reference files"
+        print "Add the path to the directory containing reference files for CNVnator"
         selection=raw_input()
         template=template.replace("{CNVnator_reference_dir_path}", "\'{}\'".format(selection) )
 
