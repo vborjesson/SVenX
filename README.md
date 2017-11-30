@@ -1,54 +1,46 @@
 # SVenX
 
 
-Pipeline that uses 10x genomics fastq-data to find Structural variants, SVs. 
+Pipeline for SV detection using 10X genomics data 
 ---
-SVenX is a program that takes in fastq-files (single samples or folder of several samples) generated from 10x-genomics, the sample-folders will be checked if they contain all necessary files and execute user selected programs such as; Longranger WGS, VEP, TIDDIT, CNVnator, SVDB and filtering steps.
+SVenX is a highly parallelized program taking fastq-files (single samples or folder of several samples) generated from 10x-genomics as input and execute variant calling, annotations, filtering and genotyping resulting in a vcf-file. 
 
 ![alt text](https://github.com/vborjesson/SVenX/blob/master/SVenX_pipe.png)
 
 ### Environmental setup 
 ---
+Nextflow needs to be installed (https://www.nextflow.io/docs/latest/getstarted.html)
 
-In order to run this program you will need to set up an environment. 
+If you are working on UPPMAX:
+```
+Module load bioinfo-tols, longranger, vep/87, CNVnator, samtools  
+```
+Download 
+- refdata for longranger (see https://www.10xgenomics.com)
+- CNVnator reference directory (https://github.com/abyzovlab/CNVnatorat)  
+- SVDB requires sciKit-learn v0.15.2 and numpy. 
 
-For all programs, Nextflow needs to be installed (https://www.nextflow.io/docs/latest/getstarted.html)
+If youre not working on UPPMAX:
+Install VEP + cache file (VEP ENSMBLE website), CNVnator (https://github.com/abyzovlab/CNVnatorat
+).
 
-If Longranger wgs:
-  If you are using UPPMAX just load the module longranger.
-  Softwares; longranger + refdata (see https://www.10xgenomics.com), 
-
-if VEP:
-  If you are using UPPMAX just load the module vep/87.
-  If you are not working on UPPMAX; VEP + cache file (VEP ENSMBLE website).
-
-If TIDDIT:
-  Just follow the instructions in setup.py.
-
-If CNVnator:   
-  If you are using UPPMAX, only load the module CNVnator and setup a reference directory.
-  If you are not working on UPPMAX, please install the CNVnator from https://github.com/abyzovlab/CNVnatorat.
-
-If TIDDIT or CNVnator:
-  If you are using UPPMAX just load the module CNVnator. 
-  You will need to merge the output vcf-files using SVDB. Installation is partly done using setup.py, but also requires sciKit-learn v0.15.2 as well as numpy.  
-
-### RUN
+### Installation SVenX 
 ---
 Clone this repository.
 ```
 git clone https://github.com/vborjesson/SVenX.git
 python setup.py
 ```
-I strongly recommend you to use a bash-script to launch SVenX. An example how your script can look like; SVenX.sh.  
 
+### RUN
+---
+Opptions
 ```
 python SVenX_main.py -h
 
 usage: SVenX_main.py [-h] [--sample TENX_SAMPLE] [--folder TENX_FOLDER]
-                     [--config CONFIG] [--dryrun] [--wgs] [--vep] [--TIDDIT]
-                     [--CNVnator] [--annotation] [--basic] [--output OUTPUT]
-                     [--nextflow NF]
+                     [--config CONFIG] [--dryrun] [--vep] [--TIDDIT]
+                     [--CNVnator] [--basic] [--output OUTPUT] [--nextflow NF]
 
 SVenX takes fastq-samples generated from 10x-genomics and execute Assambly,
 Variant calling, plots, stats etc. of the users choice
@@ -62,13 +54,11 @@ optional arguments:
   --config CONFIG       Path to configuration file
   --dryrun              Add if you want to perform a dry run (good if testing
                         pipeline)
-  --wgs                 Add if you want to run longranger wgs
   --vep                 Add if you want to run vep
   --TIDDIT              Add if you want to run variant calling - TIDDIT
   --CNVnator            Add if you want to run variant calling - CNVnator
-  --annotation          Add if you want to run annotations
   --basic               Add if you want to run longranger basic
-  --output OUTPUT       workingDir, is set to SVenX_outs as a default
+  --output OUTPUT       workingDir, is set to SVenX_outs as default
   --nextflow NF         path to program nextflow, is set to ~/nextflow as
                         default
 
@@ -77,14 +67,12 @@ optional arguments:
 An example: 
 
 ``` 
-python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P5357_1001 --wgs --vep --TIDDIT --CNVnator
+python ./SVenX_main.py --sample /home/name/project/10x_fastq_data/Sample_P3333_1001 --vep --TIDDIT --CNVnator
 ```
-
-2017-09-14
-  A cuple of days ago, SVenX executed perfectly! The only error was vep, due to emty dels_vcf (no dels found in test_data). This would normally never happen on 
-  real genomic data and will therefoir be ignored. On a couple of days I wil try run SVenX on real 10X data.
-
-  GlenX needs tab files; change this output in TIDDIT script!
+Or if you want to run several samples at the same time:
+```
+python ./SVenX_main.py --folder /home/name/project/10x_fastq_data --vep --TIDDIT --CNVnator
+```
   
 
 
