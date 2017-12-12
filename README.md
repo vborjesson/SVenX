@@ -17,11 +17,11 @@ Module load bioinfo-tols, longranger, vep/87, CNVnator, samtools
 ```
 Download 
 - refdata for longranger (see https://www.10xgenomics.com)
-- CNVnator reference directory (https://github.com/abyzovlab/CNVnatorat)  
+- CNVnator reference directory (https://github.com/abyzovlab/CNVnator)  
 - SVDB requires sciKit-learn v0.15.2 and numpy. 
 
 If youre not working on UPPMAX:
-Install VEP + cache file (VEP ENSMBLE website), CNVnator (https://github.com/abyzovlab/CNVnatorat
+Install VEP + cache file (VEP ENSMBLE website), CNVnator (https://github.com/abyzovlab/CNVnator
 ).
 
 ### Installation SVenX 
@@ -73,7 +73,7 @@ Or if you want to run several samples at the same time:
 ```
 python ./SVenX_main.py --folder /home/name/project/10x_fastq_data --vep --TIDDIT --CNVnator
 ```
-  
+
 
 
 

@@ -1,4 +1,7 @@
 
+
+
+
 //------------------------------TIDDIT----------------------------------    
 
 TIDDIT_exec_file = file( "${params.TIDDIT_path}" )
@@ -15,11 +18,12 @@ process TIDDIT {
     set ID, bam, dels_vcf, large_svs_vcf, phased_variants_vcf from wgs_outs_TIDDIT
     
     output:
-    set ID, "${ID}_TIDDIT.vcf", "${ID}_TIDDIT.tab" into TIDDIT_output
+    set ID, "${ID}_TIDDIT.vcf", "${ID}_TIDDIT.tab", "${ID}_TIDDIT_filtered.vcf" into TIDDIT_output
     
     script:
     """
-        ${TIDDIT_exec_file} --sv -b ${bam} -p ${params.TIDDIT_pairs} -q ${params.TIDDIT_q} -o ${ID}_TIDDIT
+        ${TIDDIT_exec_file} --sv -b ${bam} -i 1000 -r 6 -p ${params.TIDDIT_pairs} -q ${params.TIDDIT_q} -o ${ID}_TIDDIT
+        cat ${ID}_TIDDIT.vcf | grep -v hs37 > ${ID}_TIDDIT_filtered.vcf
     """
     }
 
