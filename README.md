@@ -13,7 +13,7 @@ Nextflow needs to be installed (https://www.nextflow.io/docs/latest/getstarted.h
 
 If you are working on UPPMAX:
 ```
-Module load bioinfo-tols, longranger, vep/87, CNVnator, samtools  
+Module load bioinfo-tols longranger vep/87 CNVnator samtools  
 ```
 Download 
 - refdata for longranger (see https://www.10xgenomics.com)

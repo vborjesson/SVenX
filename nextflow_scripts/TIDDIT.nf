@@ -22,7 +22,7 @@ process TIDDIT {
     
     script:
     """
-        ${TIDDIT_exec_file} --sv -b ${bam} -i 1000 -r 6 -p ${params.TIDDIT_pairs} -q ${params.TIDDIT_q} -o ${ID}_TIDDIT
+        ${TIDDIT_exec_file} --sv -b ${bam} -i 20000 -r 100 -p ${params.TIDDIT_pairs} -q ${params.TIDDIT_q} -o ${ID}_TIDDIT
         cat ${ID}_TIDDIT.vcf | grep -v hs37 > ${ID}_TIDDIT_filtered.vcf
     """
     }
