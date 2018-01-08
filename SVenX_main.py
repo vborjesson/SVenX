@@ -278,7 +278,7 @@ def sorting (sample_path, output_path):
 
 print('\n--------------------------------------------------------------------------------------------------------\n')
 print('SVenX')
-print('Version: 0.0.0') 
+print('Version: 0.0.1') 
 print('Author: Vanja Borjesson') 
 print('Usage: https://github.com/vborjesson/SVenX.git \n')
 print('---------------------------------------------------------------------------------------------------------\n') 

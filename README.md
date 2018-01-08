@@ -3,7 +3,7 @@
 
 Pipeline for SV detection using 10X genomics data 
 ---
-SVenX is a highly parallelized program taking fastq-files (single samples or folder of several samples) generated from 10x-genomics as input and execute variant calling, annotations, filtering and genotyping resulting in a vcf-file. 
+SVenX is a highly parallelized pipeline taking fastq-files (single samples or folder of several samples) generated from 10x-genomics as input and execute variant calling, annotations, filtering and genotyping resulting in a vcf-file. 
 
 ![alt text](https://github.com/vborjesson/SVenX/blob/master/SVenX_pipe.png)
 
@@ -11,16 +11,16 @@ SVenX is a highly parallelized program taking fastq-files (single samples or fol
 ---
 Nextflow needs to be installed (https://www.nextflow.io/docs/latest/getstarted.html)
 
-If you are working on UPPMAX:
+If you are working on a high performance cluster like UPPMAX:
 ```
-Module load bioinfo-tols longranger vep/87 CNVnator samtools  
+Module load bioinfo-tools longranger vep/87 CNVnator samtools  
 ```
 Download 
 - refdata for longranger (see https://www.10xgenomics.com)
 - CNVnator reference directory (https://github.com/abyzovlab/CNVnator)  
 - SVDB requires sciKit-learn v0.15.2 and numpy. 
 
-If youre not working on UPPMAX:
+If you´re not working on a cluster:
 Install VEP + cache file (VEP ENSMBLE website), CNVnator (https://github.com/abyzovlab/CNVnator
 ).
 
@@ -34,7 +34,7 @@ python setup.py
 
 ### RUN
 ---
-Opptions
+Options
 ```
 python SVenX_main.py -h
 
@@ -52,12 +52,10 @@ optional arguments:
                         time, collect all in one folder and enter the path to
                         that folder
   --config CONFIG       Path to configuration file
-  --dryrun              Add if you want to perform a dry run (good if testing
-                        pipeline)
+  --dryrun              Add if you want to perform a dry run on longranger wgs (skip longranger wgs by adding path to already analyzed files by longranger wgs)
   --vep                 Add if you want to run vep
   --TIDDIT              Add if you want to run variant calling - TIDDIT
   --CNVnator            Add if you want to run variant calling - CNVnator
-  --basic               Add if you want to run longranger basic
   --output OUTPUT       workingDir, is set to SVenX_outs as default
   --nextflow NF         path to program nextflow, is set to ~/nextflow as
                         default
@@ -73,6 +71,8 @@ Or if you want to run several samples at the same time:
 ```
 python ./SVenX_main.py --folder /home/name/project/10x_fastq_data --vep --TIDDIT --CNVnator
 ```
+
+For WGS data, this pipeline takes approximately 5 days to run.   
 
 
 
